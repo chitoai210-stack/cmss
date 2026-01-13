@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cập nhật số hiển thị
         countdownNumber.innerText = count;
 
-        // Phát tiếng beep mỗi nhịp (cố gắng phát lại từ đầu nếu file ngắn)
+        // Phát tiếng beep mỗi nhịp
         playBeep();
 
         // Hiệu ứng zoom nhẹ cho số mỗi lần đếm
@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset thời gian về 0 để phát lại ngay lập tức
         if(beepSound) {
             beepSound.currentTime = 0;
-            beepSound.play().catch(e => console.log("Cần tương tác người dùng để phát âm thanh"));
+            // Cần tương tác người dùng lần đầu để trình duyệt cho phép phát âm thanh
+            beepSound.play().catch(e => console.log("Cần tương tác để phát âm thanh (chính sách trình duyệt)"));
         }
     }
 
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hiện màn hình chính
         mainScene.classList.remove('hidden');
 
-        // Tại đây animation CSS sẽ tự động chạy do class .totoro-wrapper đã có sẵn trong DOM
+        // Tại đây animation CSS (walkIn) sẽ tự động chạy
         console.log("Bắt đầu đi bộ!");
     }
 });
