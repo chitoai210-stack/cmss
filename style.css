@@ -56,8 +56,8 @@ body, html {
     position: absolute;
     bottom: 10%; /* Cách mặt đất 10% */
     
-    /* --- VỊ TRÍ XUẤT PHÁT: BÊN PHẢI --- */
-    left: 105%; /* 105% để nằm khuất hẳn ra ngoài bên phải */
+    /* --- VỊ TRÍ XUẤT PHÁT: BÊN TRÁI --- */
+    left: 105%; /* 105% để nằm khuất hẳn ra ngoài bên trái */
     
     width: 400px; /* Kích thước hiển thị */
     
@@ -93,3 +93,4 @@ body, html {
         transform: translateX(-50%); /* Căn lại cho chính giữa tâm */
     }
 }
+
