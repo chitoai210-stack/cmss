@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Gift for Gwen</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <audio id="sound-beep" src="beep.mp3" preload="auto"></audio>
+    <audio id="sound-cute" src="cute.mp3" loop preload="auto"></audio>
+    <audio id="sound-explosion" src="tiengno.mp3" preload="auto"></audio>
+
+    <svg style="width: 0; height: 0; position: absolute;">
+        <defs>
+            <filter id="white-power-aura" x="-100%" y="-100%" width="300%" height="300%">
+                <feMorphology operator="dilate" radius="10" in="SourceAlpha" result="base"/>
+                <feGaussianBlur stdDeviation="5" in="base" result="blurred"/>
+                <feFlood flood-color="#00e5ff" flood-opacity="0.8" result="color"/>
+                <feComposite in="color" in2="blurred" operator="in" result="glow"/>
+                <feMerge>
+                    <feMergeNode in="glow"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <div id="device-warning">
+        <p>Hãy đảm bảo thiết bị của bạn đang dùng để xem món quà này là thiết bị tốt nhất<br>
+        (do thiết kế trên Laptop, nên nếu dùng Laptop để xem thì sẽ đong đầy cảm xúc nhất ! Thân gửi đến bạn!)</p>
+    </div>
+
+    <div id="start-overlay" style="display: none;">
+        <p>Nhấp vào đây để bắt đầu...</p>
+    </div>
+
+    <div id="countdown-screen" style="display: none;">
+        <div class="countdown-circle">
+            <span id="countdown-number">5</span>
+        </div>
+    </div>
+
+    <div id="intro-screen" style="display: none;">
+        <div class="dialogue-box">
+            <span id="dialogue-text"></span>
+        </div>
+
+        <div class="gwen-wrapper">
+            <img src="gwen.png" id="gwen-char" class="white-aura-effect" alt="Gwen">
+        </div>
+
+        <div class="cup-wrapper" onclick="openGift()">
+            <img src="cup.png.png" id="world-cup" class="white-aura-effect" alt="Cup CKTG">
+            <p class="click-hint">ĐỒNG Ý !</p>
+        </div>
+    </div>
+
+    <div id="white-overlay"></div>
+    <div id="troll-container">
+        <p class="troll-text">Muốn lấy à, đâu có dễ vậy ku 😒</p>
+    </div>
+
+    <div id="content-screen">
+        <div class="video-container">
+            <video id="gojo-video" playsinline>
+                <source src="gojo3.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ thẻ video.
+            </video>
+            <div id="video-subtitles"></div>
+        </div>
+    </div>
+
+    <div id="explosion-screen" style="display: none;">
+        <video id="notung-video" playsinline>
+            <source src="notung.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div id="final-screen" style="display: none;">
+        <img src="kp.jpg" id="kp-img" alt="Ket Qua">
+        <div id="final-fade-overlay"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
