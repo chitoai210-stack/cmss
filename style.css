@@ -56,8 +56,8 @@ body, html {
     position: absolute;
     bottom: 10%; /* Cách mặt đất 10% */
     
-    /* --- VỊ TRÍ XUẤT PHÁT: BÊN TRÁI --- */
-    left: 105%; /* 105% để nằm khuất hẳn ra ngoài bên trái */
+    /* --- VỊ TRÍ XUẤT PHÁT: BÊN PHẢI --- */
+    left: 105%; /* 105% để nằm khuất hẳn ra ngoài bên phải */
     
     width: 400px; /* Kích thước hiển thị */
     
@@ -72,7 +72,7 @@ body, html {
     display: block;
 
     /* --- LẬT MẶT --- */
-    /* Lật ngược lại để quay mặt sang trái (vì đi từ tráitrái sang) */
+    /* Lật ngược lại để quay mặt sang trái (vì đi từ phải sang) */
     transform: scaleX(-1);
 
     /* --- LỌC NỀN TRẮNG (Dự phòng) --- */
@@ -84,7 +84,7 @@ body, html {
 /* 6. Hiệu ứng di chuyển (Keyframes) */
 @keyframes walkIn {
     0% {
-        /* Bắt đầu: Bên ngoài trái */
+        /* Bắt đầu: Bên ngoài phải */
         left: 105%;
     }
     100% {
@@ -93,5 +93,3 @@ body, html {
         transform: translateX(-50%); /* Căn lại cho chính giữa tâm */
     }
 }
-
-
