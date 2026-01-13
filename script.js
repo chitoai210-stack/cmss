@@ -2,65 +2,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const countdownScreen = document.getElementById('countdown-screen');
     const countdownNumber = document.getElementById('countdown-number');
     const mainScene = document.getElementById('main-scene');
+    const finalScene = document.getElementById('final-scene');
     const beepSound = document.getElementById('beep-sound');
     const birthdayVideo = document.getElementById('birthday-video');
+    const giftBox = document.getElementById('gift-box');
 
     let count = 5;
 
-    // Phát tiếng beep lần đầu tiên ngay khi tải (cho số 5)
-    // Lưu ý: Một số trình duyệt chặn âm thanh nếu người dùng chưa click
+    // Phát tiếng beep đầu tiên (số 5)
     playBeep();
 
     const timer = setInterval(() => {
-        count--; // Giảm số trước
+        count--;
 
-        if (count >= 0) {
-            // Cập nhật số hiển thị
-            countdownNumber.innerText = count;
+        if (count > 0) {
+            // Chỉ cập nhật số và beep nếu > 0
+            updateDisplay(count);
+            playBeep();
+        } else if (count === 0) {
+            // Đến số 0: Chỉ cập nhật số, KHÔNG BEEP
+            updateDisplay(count);
             
-            // Hiệu ứng zoom nhẹ số
-            countdownNumber.style.transform = "scale(1.2)";
-            setTimeout(() => {
-                countdownNumber.style.transform = "scale(1)";
-            }, 200);
-
-            // Logic tiếng Beep: Chỉ kêu khi count > 0 (Số 0 không kêu)
-            if (count > 0) {
-                playBeep();
-            }
-        }
-
-        if (count === 0) {
-            // Đợi 1 giây ở số 0 rồi mới chuyển cảnh
+            // Đợi 1 giây ở số 0 rồi chuyển cảnh
             setTimeout(() => {
                 clearInterval(timer);
-                finishCountdown();
+                startMainScene();
             }, 1000);
         }
     }, 1000);
 
+    function updateDisplay(num) {
+        countdownNumber.innerText = num;
+        countdownNumber.style.transform = "scale(1.2)";
+        setTimeout(() => countdownNumber.style.transform = "scale(1)", 200);
+    }
+
     function playBeep() {
         if(beepSound) {
             beepSound.currentTime = 0;
-            beepSound.play().catch(e => console.log("Chưa có tương tác, không thể phát tiếng"));
+            beepSound.play().catch(e => {});
         }
     }
 
-    function finishCountdown() {
-        // Ẩn màn hình đếm ngược
+    function startMainScene() {
         countdownScreen.classList.add('hidden');
-        
-        // Hiện màn hình video
         mainScene.classList.remove('hidden');
 
-        // Phát video
         if (birthdayVideo) {
             birthdayVideo.play().catch(e => {
-                console.log("Trình duyệt chặn tự phát video có tiếng.");
-                // Nếu bị chặn, hiển thị nút play hoặc yêu cầu người dùng bấm (tùy chọn)
-                birthdayVideo.muted = true; // Thử mute để play được
+                birthdayVideo.muted = true; 
                 birthdayVideo.play();
             });
         }
+
+        // --- CÀI ĐẶT THỜI GIAN HIỆN HỘP QUÀ ---
+        // Vì mình không biết clip của bạn dài bao nhiêu và 3 con đi mất mấy giây
+        // Bạn hãy chỉnh số 8000 bên dưới (tức là 8 giây) cho khớp nhé!
+        setTimeout(() => {
+            giftBox.classList.remove('hidden');
+        }, 8000); 
     }
+
+    // Sự kiện click vào hộp quà
+    giftBox.addEventListener('click', () => {
+        // Ẩn màn hình video
+        mainScene.classList.add('hidden');
+        // Hiện màn hình cuối (đồng cỏ)
+        finalScene.classList.remove('hidden');
+    });
 });
