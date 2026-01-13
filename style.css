@@ -1,164 +1,92 @@
-/* --- 1. THIẾT LẬP NỀN CƠ BẢN --- */
-body {
+/* Reset cơ bản */
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    height: 100vh;
-    font-family: 'Montserrat', sans-serif;
-    background-color: black; /* Nền gốc là màu đen */
+    box-sizing: border-box;
 }
 
-/* --- MÀN HÌNH ĐẾM NGƯỢC (NỀN ĐEN TUYỀN) --- */
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Không cho cuộn trang */
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- Màn hình đếm ngược --- */
 #countdown-screen {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    background-color: black; /* Đảm bảo đen tuyền */
-}
-
-.countdown-circle {
-    width: 150px; height: 150px;
-    border-radius: 50%;
-    border: 5px solid #00e5ff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
-    animation: pulseCircle 1s infinite alternate;
+    top: 0;
+    left: 0;
+    z-index: 10;
 }
 
 #countdown-number {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 5rem;
-    color: #ffffff;
-    text-shadow: 0 0 20px #00e5ff;
+    color: #fff;
+    font-size: 10rem;
+    font-weight: bold;
 }
 
-@keyframes pulseCircle {
-    from { transform: scale(1); box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
-    to { transform: scale(1.1); box-shadow: 0 0 40px rgba(0, 229, 255, 0.8); }
+/* Class để ẩn element */
+.hidden {
+    display: none !important;
 }
 
-/* --- MÀN HÌNH INTRO (NỀN VŨ TRỤ) --- */
-#intro-screen {
-    display: flex; /* Được JS bật lại */
-    width: 100%; height: 100%;
-    position: absolute; top: 0; left: 0; z-index: 10;
+/* --- Màn hình chính --- */
+#main-scene {
+    width: 100%;
+    height: 100%;
+    /* Thay đổi hình nền đồng cỏ của bạn ở đây */
+    background: url('dongco.jpg') no-repeat center center/cover;
+    position: relative;
+    z-index: 5;
+}
+
+/* Wrapper chứa hình Totoro để xử lý việc di chuyển từ trái sang phải */
+.totoro-wrapper {
+    position: absolute;
+    bottom: 10%; /* Điều chỉnh độ cao so với mặt đất */
+    left: -300px; /* Bắt đầu từ bên ngoài màn hình bên trái */
+    width: 300px; /* Điều chỉnh kích thước cụm Totoro */
     
-    /* CHUYỂN ẢNH NỀN VÀO ĐÂY */
-    background-image: url('nen.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    /* Animation di chuyển từ trái vào giữa */
+    /* forwards giữ nguyên vị trí khi kết thúc */
+    animation: walkIn 8s linear forwards; 
 }
 
-.side-left, .side-right {
-    flex: 1; 
-    position: relative; display: flex;
-    justify-content: center; align-items: center;
+/* Hình ảnh Totoro bên trong wrapper để xử lý hiệu ứng nhún nhảy (giả lập bước đi) */
+#totoro-img {
+    width: 100%;
+    height: auto;
+    /* Loại bỏ nền trắng của ảnh JPG nếu có thể (dùng mix-blend-mode nếu nền web sáng) */
+    /* mix-blend-mode: multiply; */ 
+    
+    /* Animation nhún nhảy */
+    animation: bounce 0.4s infinite alternate;
 }
 
-/* --- CLASS HIỆU ỨNG AURA (GIỮ NGUYÊN) --- */
-.white-aura-effect {
-    filter: url('#white-power-aura') drop-shadow(0 0 20px rgba(0, 229, 255, 0.8));
-    .start-animations & {
-         animation: powerSurge 3s infinite ease-in-out;
+/* Keyframes: Di chuyển từ trái vào giữa màn hình */
+@keyframes walkIn {
+    0% {
+        left: -300px;
+    }
+    100% {
+        left: 50%;
+        transform: translateX(-50%); /* Căn chính giữa */
     }
 }
-@keyframes powerSurge {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-5px) scale(1.01); }
-}
 
-/* --- CHIẾC CÚP (GIỮ NGUYÊN) --- */
-.side-left { z-index: 20; }
-.cup-container { position: relative; cursor: pointer; }
-
-#world-cup {
-    width: 280px; max-width: 80vw; z-index: 20; opacity: 0;
+/* Keyframes: Tạo hiệu ứng nhún nhảy lên xuống và lắc nhẹ */
+@keyframes bounce {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-10px) rotate(2deg); /* Nhảy lên 10px và nghiêng 2 độ */
+    }
 }
-.start-animations #world-cup {
-    animation: cupAppear 2s ease-out forwards, floatCup 4s ease-in-out infinite 2s;
-}
-
-.click-hint {
-    position: absolute; bottom: -60px; width: 100%; text-align: center;
-    color: #fff; font-size: 1.3rem; font-weight: bold; text-transform: uppercase;
-    letter-spacing: 2px; opacity: 0;
-    text-shadow: 0 0 10px #00e5ff, 0 0 25px #e0ffff;
-}
-.start-animations .click-hint {
-     animation: blink 0.8s infinite alternate 2s;
-}
-
-/* --- GWEN (GIỮ NGUYÊN) --- */
-.side-right { align-items: flex-end; overflow: visible; padding-bottom: 60px; }
-.gwen-container { position: relative; display: flex; justify-content: center; align-items: flex-end; height: 100%; }
-
-#gwen-char {
-    height: 55vh; width: auto; position: relative; z-index: 10; opacity: 0;
-}
-.start-animations #gwen-char {
-    animation: gwenAppear 2s ease-out forwards, powerSurge 3s infinite ease-in-out 2s;
-}
-
-/* --- LỜI THOẠI (GIỮ NGUYÊN) --- */
-.dialogue-box {
-    position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-    width: 320px; background: rgba(0, 20, 40, 0.8); border: 2px solid #00e5ff;
-    padding: 20px; border-radius: 20px; font-family: 'Times New Roman', Times, serif;
-    font-size: 1.8rem; font-style: italic; line-height: 1.4; text-align: center;
-    color: #ffffff; z-index: 100; box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
-    opacity: 0;
-}
-.start-animations .dialogue-box {
-    animation: textFadeIn 2s ease forwards 1.5s;
-}
-.highlight { color: #e0ffff; font-weight: bold; text-shadow: 0 0 15px #00e5ff; }
-
-/* --- MÀN TRẮNG --- */
-#white-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: white; z-index: 999; opacity: 0; pointer-events: none;
-    transition: opacity 0.5s ease;
-}
-
-/* --- MÀN HÌNH VIDEO (CHỈNH SỬA TOÀN MÀN HÌNH) --- */
-#content-screen {
-    display: none;
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 50;
-    background: black;
-}
-
-.video-container {
-    /* Mở rộng container ra toàn màn hình */
-    width: 100%;
-    height: 100%;
-    box-shadow: none; /* Xóa bóng */
-}
-
-video {
-    /* Video chiếm toàn bộ container */
-    width: 100%;
-    height: 100%;
-    /* object-fit: cover giúp video tràn màn hình (có thể cắt nhẹ 2 bên nếu tỷ lệ không khớp) */
-    /* Nếu muốn thấy hết video mà chấp nhận viền đen, đổi 'cover' thành 'contain' */
-    object-fit: cover; 
-    border: none; /* Xóa viền */
-    border-radius: 0; /* Xóa bo góc */
-    display: block;
-}
-
-/* --- ANIMATIONS CHUNG --- */
-@keyframes cupAppear { from { transform: translateX(-100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes gwenAppear { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes floatCup { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-@keyframes textFadeIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
-@keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
-@keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
