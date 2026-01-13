@@ -9,13 +9,25 @@
 <body>
 
     <div id="countdown-screen">
-        <h1 id="countdown-number">5</h1>
+        <div class="countdown-container">
+            <svg class="progress-ring" width="300" height="300">
+                <circle class="progress-ring__circle"
+                        stroke="#00a8ff"
+                        stroke-width="10"
+                        fill="transparent"
+                        r="120"
+                        cx="150"
+                        cy="150"/>
+            </svg>
+            <h1 id="countdown-number">5</h1>
+        </div>
     </div>
 
     <div id="main-scene" class="hidden">
-        <div class="totoro-wrapper">
-            <img src="totoro.gif" alt="Totoro Walking" id="totoro-img">
-        </div>
+        <video id="birthday-video" playsinline>
+            <source src="tonew1.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
     </div>
 
     <audio id="beep-sound" src="beep.mp3"></audio>
