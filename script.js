@@ -3,37 +3,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const countdownNumber = document.getElementById('countdown-number');
     const mainScene = document.getElementById('main-scene');
     const beepSound = document.getElementById('beep-sound');
+    const birthdayVideo = document.getElementById('birthday-video');
 
     let count = 5;
 
-    // Hàm đếm ngược
+    // Phát tiếng beep lần đầu tiên ngay khi tải (cho số 5)
+    // Lưu ý: Một số trình duyệt chặn âm thanh nếu người dùng chưa click
+    playBeep();
+
     const timer = setInterval(() => {
-        // Cập nhật số hiển thị
-        countdownNumber.innerText = count;
+        count--; // Giảm số trước
 
-        // Phát tiếng beep mỗi nhịp
-        playBeep();
+        if (count >= 0) {
+            // Cập nhật số hiển thị
+            countdownNumber.innerText = count;
+            
+            // Hiệu ứng zoom nhẹ số
+            countdownNumber.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                countdownNumber.style.transform = "scale(1)";
+            }, 200);
 
-        // Hiệu ứng zoom nhẹ cho số mỗi lần đếm
-        countdownNumber.style.transform = "scale(1.2)";
-        setTimeout(() => {
-            countdownNumber.style.transform = "scale(1)";
-        }, 200);
-
-        if (count === 0) {
-            clearInterval(timer);
-            finishCountdown();
+            // Logic tiếng Beep: Chỉ kêu khi count > 0 (Số 0 không kêu)
+            if (count > 0) {
+                playBeep();
+            }
         }
 
-        count--;
-    }, 1000); // 1000ms = 1 giây
+        if (count === 0) {
+            // Đợi 1 giây ở số 0 rồi mới chuyển cảnh
+            setTimeout(() => {
+                clearInterval(timer);
+                finishCountdown();
+            }, 1000);
+        }
+    }, 1000);
 
     function playBeep() {
-        // Reset thời gian về 0 để phát lại ngay lập tức
         if(beepSound) {
             beepSound.currentTime = 0;
-            // Cần tương tác người dùng lần đầu để trình duyệt cho phép phát âm thanh
-            beepSound.play().catch(e => console.log("Cần tương tác để phát âm thanh (chính sách trình duyệt)"));
+            beepSound.play().catch(e => console.log("Chưa có tương tác, không thể phát tiếng"));
         }
     }
 
@@ -41,10 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ẩn màn hình đếm ngược
         countdownScreen.classList.add('hidden');
         
-        // Hiện màn hình chính
+        // Hiện màn hình video
         mainScene.classList.remove('hidden');
 
-        // Tại đây animation CSS (walkIn) sẽ tự động chạy
-        console.log("Bắt đầu đi bộ!");
+        // Phát video
+        if (birthdayVideo) {
+            birthdayVideo.play().catch(e => {
+                console.log("Trình duyệt chặn tự phát video có tiếng.");
+                // Nếu bị chặn, hiển thị nút play hoặc yêu cầu người dùng bấm (tùy chọn)
+                birthdayVideo.muted = true; // Thử mute để play được
+                birthdayVideo.play();
+            });
+        }
     }
 });
