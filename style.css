@@ -1,89 +1,49 @@
-/* Reset cơ bản */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* --- FILE: style.css --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; }
 
-body, html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: #000; /* Nền đen mặc định */
-    font-family: 'Arial', sans-serif;
-}
+/* Màn hình đếm ngược */
+#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 10; background-color: #000; }
+.countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
+#countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
 
-/* --- Màn hình đếm ngược --- */
-#countdown-screen {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    background-color: #000;
-}
-
-/* Container chứa cả vòng tròn và số */
-.countdown-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Số đếm nằm giữa */
-#countdown-number {
-    color: #fff;
-    font-size: 8rem;
-    font-weight: bold;
-    position: absolute;
-    z-index: 2;
-}
-
-/* --- Hiệu ứng vòng tròn xanh tua ngược --- */
+/* Hiệu ứng vòng tròn */
 .progress-ring__circle {
-    /* Chu vi hình tròn: 2 * pi * r (120) ≈ 754 */
-    stroke-dasharray: 754; 
-    stroke-dashoffset: 0;
-    /* Xoay -90 độ để bắt đầu từ đỉnh 12h */
-    transform-origin: 50% 50%;
-    transform: rotate(-90deg);
-    
-    /* Animation chạy trong 5 giây để tua hết vòng tròn */
+    stroke-dasharray: 754; stroke-dashoffset: 0;
+    transform-origin: 50% 50%; transform: rotate(-90deg);
     animation: countdown-ring 5s linear forwards;
 }
+@keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
-@keyframes countdown-ring {
-    from {
-        stroke-dashoffset: 0;
-    }
-    to {
-        stroke-dashoffset: 754; /* Giá trị bằng chu vi để ẩn hoàn toàn */
-    }
+/* Màn hình Video */
+.hidden { display: none !important; }
+#main-scene { width: 100%; height: 100%; position: relative; z-index: 5; }
+#birthday-video { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- STYLE HỘP QUÀ --- */
+#gift-box {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%); /* Căn chính giữa màn hình */
+    font-size: 100px; /* Kích thước hộp quà */
+    cursor: pointer;
+    z-index: 20; /* Nằm đè lên video */
+    
+    /* Hiệu ứng lắc lư liên tục */
+    animation: shake 2s infinite;
 }
 
-/* --- Màn hình Video --- */
-.hidden {
-    display: none !important;
+@keyframes shake {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(-10deg); }
+    50% { transform: translate(-50%, -50%) rotate(10deg); }
+    75% { transform: translate(-50%, -50%) rotate(-10deg); }
+    100% { transform: translate(-50%, -50%) rotate(0deg); }
 }
 
-#main-scene {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    z-index: 5;
-}
-
-/* Video full màn hình */
-#birthday-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Đảm bảo video lấp đầy màn hình mà không bị méo */
-    display: block;
+/* --- Màn hình 3 (Kết thúc) --- */
+#final-scene {
+    width: 100%; height: 100%;
+    background: url('dongco.png') no-repeat center center/cover;
+    position: absolute; top: 0; left: 0; z-index: 30;
 }
