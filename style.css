@@ -41,7 +41,7 @@ body, html {
 #main-scene {
     width: 100%;
     height: 100%;
-    /* Thay đổi hình nền đồng cỏ của bạn ở đây */
+    /* Đảm bảo file dongco.jpg đúng tên */
     background: url('dongco.jpg') no-repeat center center/cover;
     position: relative;
     z-index: 5;
@@ -51,42 +51,29 @@ body, html {
 .totoro-wrapper {
     position: absolute;
     bottom: 10%; /* Điều chỉnh độ cao so với mặt đất */
-    left: -300px; /* Bắt đầu từ bên ngoài màn hình bên trái */
-    width: 300px; /* Điều chỉnh kích thước cụm Totoro */
+    left: -400px; /* Bắt đầu từ bên ngoài màn hình bên trái (tăng lên nếu ảnh GIF to) */
+    width: 400px; /* Điều chỉnh kích thước cụm Totoro cho phù hợp với file GIF */
     
     /* Animation di chuyển từ trái vào giữa */
-    /* forwards giữ nguyên vị trí khi kết thúc */
+    /* Thời gian 8s, kiểu di chuyển đều (linear), giữ nguyên vị trí cuối (forwards) */
     animation: walkIn 8s linear forwards; 
 }
 
-/* Hình ảnh Totoro bên trong wrapper để xử lý hiệu ứng nhún nhảy (giả lập bước đi) */
+/* Hình ảnh Totoro GIF bên trong */
 #totoro-img {
     width: 100%;
     height: auto;
-    /* Loại bỏ nền trắng của ảnh JPG nếu có thể (dùng mix-blend-mode nếu nền web sáng) */
-    /* mix-blend-mode: multiply; */ 
-    
-    /* Animation nhún nhảy */
-    animation: bounce 0.4s infinite alternate;
+    display: block;
+    /* Không cần animation bounce nữa vì GIF đã tự động rồi */
 }
 
 /* Keyframes: Di chuyển từ trái vào giữa màn hình */
 @keyframes walkIn {
     0% {
-        left: -300px;
+        left: -400px; /* Điểm bắt đầu khớp với .totoro-wrapper */
     }
     100% {
         left: 50%;
         transform: translateX(-50%); /* Căn chính giữa */
-    }
-}
-
-/* Keyframes: Tạo hiệu ứng nhún nhảy lên xuống và lắc nhẹ */
-@keyframes bounce {
-    0% {
-        transform: translateY(0) rotate(0deg);
-    }
-    100% {
-        transform: translateY(-10px) rotate(2deg); /* Nhảy lên 10px và nghiêng 2 độ */
     }
 }
