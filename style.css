@@ -1,4 +1,6 @@
-/* Reset cơ bản */
+/* --- FILE: style.css --- */
+
+/* 1. Thiết lập cơ bản */
 * {
     margin: 0;
     padding: 0;
@@ -8,22 +10,22 @@
 body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Không cho cuộn trang */
+    overflow: hidden; /* Chặn thanh cuộn */
     font-family: 'Arial', sans-serif;
 }
 
-/* --- Màn hình đếm ngược --- */
+/* 2. Màn hình đếm ngược (Nền đen) */
 #countdown-screen {
     background-color: #000;
     width: 100%;
     height: 100%;
-    display: flex;
+    display: flex; /* Căn giữa nội dung */
     justify-content: center;
     align-items: center;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 10; /* Luôn nằm trên cùng */
 }
 
 #countdown-number {
@@ -32,63 +34,62 @@ body, html {
     font-weight: bold;
 }
 
-/* Class để ẩn element */
+/* Class hỗ trợ ẩn màn hình */
 .hidden {
     display: none !important;
 }
 
-/* --- Màn hình chính --- */
+/* 3. Màn hình chính (Sân khấu) */
 #main-scene {
     width: 100%;
     height: 100%;
-    /* Đảm bảo file nền là dongco.png */
+    
+    /* Đặt nền là dongco.png */
     background: url('dongco.png') no-repeat center center/cover;
+    
     position: relative;
     z-index: 5;
 }
 
-/* Wrapper chứa hình Totoro để xử lý việc di chuyển */
+/* 4. Khung chứa nhân vật (Dùng để di chuyển vị trí) */
 .totoro-wrapper {
     position: absolute;
-    bottom: 10%; /* Điều chỉnh độ cao so với mặt đất */
+    bottom: 10%; /* Cách mặt đất 10% */
     
-    /* --- THAY ĐỔI VỊ TRÍ XUẤT PHÁT --- */
-    /* Đặt là 105% để nó nằm hẳn ra ngoài màn hình bên phải */
-    left: 105%; 
+    /* --- VỊ TRÍ XUẤT PHÁT: BÊN PHẢI --- */
+    left: 105%; /* 105% để nằm khuất hẳn ra ngoài bên phải */
     
-    width: 400px; /* Điều chỉnh kích thước cụm Totoro cho phù hợp */
+    width: 400px; /* Kích thước hiển thị */
     
-    /* Animation di chuyển từ PHẢI vào giữa */
+    /* Animation: Tên 'walkIn', chạy trong 8s, tốc độ đều (linear), giữ nguyên vị trí cuối (forwards) */
     animation: walkIn 8s linear forwards; 
 }
 
-/* Hình ảnh Totoro GIF bên trong */
+/* 5. Hình ảnh nhân vật (Dùng để lật mặt và lọc nền) */
 #totoro-img {
     width: 100%;
     height: auto;
     display: block;
-    
-    /* --- SỬA LẠI DÒNG NÀY --- */
-    /* Đổi từ multiply sang darken để lọc màu trắng mạnh hơn */
-    mix-blend-mode: darken; 
 
-    /* Lật ngược ảnh để quay mặt sang trái */
+    /* --- LẬT MẶT --- */
+    /* Lật ngược lại để quay mặt sang trái (vì đi từ phải sang) */
     transform: scaleX(-1);
-    
-    /* Tăng độ tương phản một chút để hình rõ hơn khi lọc nền */
-    filter: contrast(1.1);
+
+    /* --- LỌC NỀN TRẮNG (Dự phòng) --- */
+    /* Nếu bạn đã tách nền bằng web thành công thì có thể xóa dòng dưới này */
+    /* Nếu ảnh vẫn còn viền trắng, giữ nguyên dòng này để nó tự làm tối viền đi */
+    mix-blend-mode: darken; 
 }
 
-/* Keyframes: Di chuyển từ PHẢI vào giữa màn hình */
+/* 6. Hiệu ứng di chuyển (Keyframes) */
 @keyframes walkIn {
     0% {
-        /* Điểm bắt đầu: Ngoài màn hình bên phải */
+        /* Bắt đầu: Bên ngoài phải */
         left: 105%;
     }
     100% {
-        /* Điểm kết thúc: Giữa màn hình */
+        /* Kết thúc: Ở giữa màn hình */
         left: 50%;
-        transform: translateX(-50%); /* Căn chính giữa */
+        transform: translateX(-50%); /* Căn lại cho chính giữa tâm */
     }
 }
-
