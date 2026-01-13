@@ -41,21 +41,24 @@ body, html {
 #main-scene {
     width: 100%;
     height: 100%;
-    /* --- QUAN TRỌNG: Đã đổi thành .png --- */
-    /* Hãy đảm bảo bạn đã upload file có tên chính xác là dongco.png lên GitHub */
+    /* Đảm bảo file nền là dongco.png */
     background: url('dongco.png') no-repeat center center/cover;
     position: relative;
     z-index: 5;
 }
 
-/* Wrapper chứa hình Totoro để xử lý việc di chuyển từ trái sang phải */
+/* Wrapper chứa hình Totoro để xử lý việc di chuyển */
 .totoro-wrapper {
     position: absolute;
     bottom: 10%; /* Điều chỉnh độ cao so với mặt đất */
-    left: -400px; /* Bắt đầu từ bên ngoài màn hình bên trái */
-    width: 400px; /* Điều chỉnh kích thước cụm Totoro */
     
-    /* Animation di chuyển từ trái vào giữa */
+    /* --- THAY ĐỔI VỊ TRÍ XUẤT PHÁT --- */
+    /* Đặt là 105% để nó nằm hẳn ra ngoài màn hình bên phải */
+    left: 105%; 
+    
+    width: 400px; /* Điều chỉnh kích thước cụm Totoro cho phù hợp */
+    
+    /* Animation di chuyển từ PHẢI vào giữa */
     animation: walkIn 8s linear forwards; 
 }
 
@@ -65,17 +68,22 @@ body, html {
     height: auto;
     display: block;
     
-    /* --- MỚI THÊM: Mẹo loại bỏ nền trắng --- */
-    /* Dòng này giúp làm trong suốt phần nền trắng của file GIF */
+    /* --- Mẹo loại bỏ nền trắng (Chỉ hoạt động với nền trắng tinh) --- */
     mix-blend-mode: multiply; 
+
+    /* --- THAY ĐỔI HƯỚNG MẶT --- */
+    /* Lật ngược ảnh theo chiều ngang để Totoro quay mặt về bên trái khi đi từ phải sang */
+    transform: scaleX(-1);
 }
 
-/* Keyframes: Di chuyển từ trái vào giữa màn hình */
+/* Keyframes: Di chuyển từ PHẢI vào giữa màn hình */
 @keyframes walkIn {
     0% {
-        left: -400px;
+        /* Điểm bắt đầu: Ngoài màn hình bên phải */
+        left: 105%;
     }
     100% {
+        /* Điểm kết thúc: Giữa màn hình */
         left: 50%;
         transform: translateX(-50%); /* Căn chính giữa */
     }
