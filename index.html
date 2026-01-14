@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday game!</title>
+    <title>Happy Birthday!</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="start-screen">
-        <h1 class="blink-text">Nhấp vào đây để bắt đầu !</h1>
+    <div id="password-screen">
+        <div class="pass-box">
+            <h2>Nhập mật khẩu để mở quà:</h2>
+            <input type="password" id="pass-input" placeholder="********">
+            <button id="pass-btn">Mở Quà</button>
+            <p id="pass-error" class="hidden">Sai mật khẩu rồi!</p>
+        </div>
+    </div>
+
+    <div id="start-screen" class="hidden">
+        <h1 class="blink-text">Mật khẩu đúng!<br>Nhấp vào đây để bắt đầu</h1>
     </div>
 
     <div id="countdown-screen" class="hidden">
@@ -42,7 +51,6 @@
     </div>
 
     <audio id="beep-sound" src="beep.mp3"></audio>
-    
     <audio id="pop-sound" src="pop.mp3"></audio>
 
     <script src="script.js"></script>
