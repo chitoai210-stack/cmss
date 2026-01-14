@@ -2,48 +2,57 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; }
 
+/* Class ẩn */
+.hidden { display: none !important; }
+
+/* 0. Màn hình Start (MỚI) */
+#start-screen {
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background-color: #000;
+    cursor: pointer; /* Con trỏ hình bàn tay */
+    position: absolute; top: 0; left: 0; z-index: 50;
+}
+#start-screen h1 {
+    color: #fff; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px;
+}
+/* Hiệu ứng nhấp nháy chữ */
+.blink-text { animation: blinker 1.5s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
+
 /* 1. Màn hình đếm ngược */
 #countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 10; background-color: #000; }
 .countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
 #countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
 
-/* Hiệu ứng vòng tròn */
+/* Vòng tròn xoay */
 .progress-ring__circle {
     stroke-dasharray: 754; stroke-dashoffset: 0;
     transform-origin: 50% 50%; transform: rotate(-90deg);
-    animation: countdown-ring 5s linear forwards;
 }
+/* Class kích hoạt animation vòng tròn (sẽ thêm bằng JS) */
+.animate-ring { animation: countdown-ring 5s linear forwards; }
 @keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
 /* 2. Màn hình Video */
-.hidden { display: none !important; }
 #main-scene { width: 100%; height: 100%; position: relative; z-index: 5; }
 #birthday-video { width: 100%; height: 100%; object-fit: cover; }
 
-/* 3. Style Hộp quà */
+/* Style Hộp quà */
 #gift-box {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%); /* Căn giữa */
-    font-size: 100px; /* Kích thước icon */
-    cursor: pointer;
-    z-index: 20;
-    
-    /* Animation lắc lư */
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px; cursor: pointer; z-index: 20;
     animation: shake 2s infinite; 
 }
-
 @keyframes shake {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    10% { transform: translate(-50%, -50%) rotate(-10deg); }
-    20% { transform: translate(-50%, -50%) rotate(10deg); }
-    30% { transform: translate(-50%, -50%) rotate(-10deg); }
-    40% { transform: translate(-50%, -50%) rotate(10deg); }
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); }
+    20%, 40% { transform: translate(-50%, -50%) rotate(10deg); }
     50% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(0deg); }
 }
 
-/* 4. Màn hình cuối (Nền đồng cỏ) */
+/* 3. Màn hình cuối */
 #final-scene {
     width: 100%; height: 100%;
     background: url('dongco.png') no-repeat center center/cover;
