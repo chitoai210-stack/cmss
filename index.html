@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday game!</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,12 +16,8 @@
         <div class="countdown-container">
             <svg class="progress-ring" width="300" height="300">
                 <circle class="progress-ring__circle"
-                        stroke="#00a8ff"
-                        stroke-width="10"
-                        fill="transparent"
-                        r="120"
-                        cx="150"
-                        cy="150"/>
+                        stroke="#00a8ff" stroke-width="10" fill="transparent"
+                        r="120" cx="150" cy="150"/>
             </svg>
             <h1 id="countdown-number">5</h1>
         </div>
@@ -32,13 +28,18 @@
             <source src="tonew1.mp4" type="video/mp4">
             Trình duyệt không hỗ trợ video.
         </video>
-        
-        <div id="gift-box" class="hidden">
-            🎁
-        </div>
+        <div id="gift-box" class="hidden">🎁</div>
     </div>
 
-    <div id="final-scene" class="hidden"></div>
+    <div id="final-scene" class="hidden game-cursor">
+        <div id="score-board">
+            Đập trúng: <span id="score">0</span>/10
+        </div>
+        </div>
+    
+    <div id="victory-screen" class="hidden">
+        <h1>CHÚC MỪNG SINH NHẬT! <br> YAYYY! 🎉</h1>
+    </div>
 
     <audio id="beep-sound" src="beep.mp3"></audio>
 
