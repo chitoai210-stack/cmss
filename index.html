@@ -8,7 +8,11 @@
 </head>
 <body>
 
-    <div id="countdown-screen">
+    <div id="start-screen">
+        <h1 class="blink-text">Nhấp vào đây để bắt đầu !</h1>
+    </div>
+
+    <div id="countdown-screen" class="hidden">
         <div class="countdown-container">
             <svg class="progress-ring" width="300" height="300">
                 <circle class="progress-ring__circle"
@@ -34,8 +38,7 @@
         </div>
     </div>
 
-    <div id="final-scene" class="hidden">
-        </div>
+    <div id="final-scene" class="hidden"></div>
 
     <audio id="beep-sound" src="beep.mp3"></audio>
 
