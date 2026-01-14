@@ -1,60 +1,78 @@
 /* --- FILE: style.css --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; }
-
-/* Class ẩn */
 .hidden { display: none !important; }
 
-/* 0. Màn hình Start (MỚI) */
-#start-screen {
-    width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center;
-    background-color: #000;
-    cursor: pointer; /* Con trỏ hình bàn tay */
-    position: absolute; top: 0; left: 0; z-index: 50;
-}
-#start-screen h1 {
-    color: #fff; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px;
-}
-/* Hiệu ứng nhấp nháy chữ */
+/* Màn hình Start */
+#start-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #000; cursor: pointer; position: absolute; z-index: 50; }
+#start-screen h1 { color: #fff; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; }
 .blink-text { animation: blinker 1.5s linear infinite; }
 @keyframes blinker { 50% { opacity: 0; } }
 
-/* 1. Màn hình đếm ngược */
-#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 10; background-color: #000; }
+/* Màn hình đếm ngược */
+#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; z-index: 10; background-color: #000; }
 .countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
 #countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
-
-/* Vòng tròn xoay */
-.progress-ring__circle {
-    stroke-dasharray: 754; stroke-dashoffset: 0;
-    transform-origin: 50% 50%; transform: rotate(-90deg);
-}
-/* Class kích hoạt animation vòng tròn (sẽ thêm bằng JS) */
+.progress-ring__circle { stroke-dasharray: 754; stroke-dashoffset: 0; transform-origin: 50% 50%; transform: rotate(-90deg); }
 .animate-ring { animation: countdown-ring 5s linear forwards; }
 @keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
-/* 2. Màn hình Video */
+/* Màn hình Video */
 #main-scene { width: 100%; height: 100%; position: relative; z-index: 5; }
 #birthday-video { width: 100%; height: 100%; object-fit: cover; }
+#gift-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; cursor: pointer; z-index: 20; animation: shake 2s infinite; }
+@keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); } 20%, 40% { transform: translate(-50%, -50%) rotate(10deg); } 50% { transform: translate(-50%, -50%) rotate(0deg); } }
 
-/* Style Hộp quà */
-#gift-box {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 100px; cursor: pointer; z-index: 20;
-    animation: shake 2s infinite; 
-}
-@keyframes shake {
-    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-    10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); }
-    20%, 40% { transform: translate(-50%, -50%) rotate(10deg); }
-    50% { transform: translate(-50%, -50%) rotate(0deg); }
-}
+/* --- STYLE CHO GAME (MỚI) --- */
 
-/* 3. Màn hình cuối */
+/* Màn hình chứa game */
 #final-scene {
     width: 100%; height: 100%;
-    background: url('dongco.png') no-repeat center center/cover;
+    /* Đổi nền sang idol.webp */
+    background: url('idol.webp') no-repeat center center/cover;
     position: absolute; top: 0; left: 0; z-index: 30;
+    overflow: hidden; /* Không cho chuột chạy ra ngoài khung */
+}
+
+/* Hiệu ứng con trỏ búa */
+.game-cursor {
+    /* Dùng tạm hình hồng tâm. Nếu có file hammer.png thì đổi thành dòng dưới */
+    cursor: crosshair; 
+    /* cursor: url('hammer.png'), auto;  <-- Bỏ comment dòng này nếu bạn có file ảnh búa */
+}
+
+/* Bảng điểm */
+#score-board {
+    position: absolute; top: 20px; left: 20px;
+    color: #fff; font-size: 24px; font-weight: bold;
+    background: rgba(0,0,0,0.6); /* Nền đen bán trong suốt để dễ nhìn chữ */
+    padding: 10px 20px; border-radius: 15px;
+    z-index: 40; pointer-events: none; /* Không cho click vào bảng điểm */
+}
+
+/* Style cho con "chuột" (to2.png) */
+.mole {
+    position: absolute;
+    width: 120px; /* Kích thước hiển thị của to2.png, bạn có thể chỉnh sửa */
+    height: auto;
+    cursor: crosshair; /* Đảm bảo trỏ vào chuột vẫn là hình cái búa */
+    /* Hiệu ứng xuất hiện: Phóng to từ 0 lên 1 */
+    animation: popUp 0.3s ease-out forwards;
+}
+
+@keyframes popUp {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Màn hình chiến thắng */
+#victory-screen {
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background: rgba(0,0,0,0.85); /* Nền tối phủ lên */
+    position: absolute; top: 0; left: 0; z-index: 100;
+}
+#victory-screen h1 {
+    color: gold; font-size: 4rem; text-align: center; line-height: 1.5;
+    animation: shake 1s infinite; /* Tận dụng lại hiệu ứng lắc lư */
 }
