@@ -2,7 +2,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; }
 
-/* Màn hình đếm ngược */
+/* 1. Màn hình đếm ngược */
 #countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 10; background-color: #000; }
 .countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
 #countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
@@ -15,33 +15,35 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 }
 @keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
-/* Màn hình Video */
+/* 2. Màn hình Video */
 .hidden { display: none !important; }
 #main-scene { width: 100%; height: 100%; position: relative; z-index: 5; }
 #birthday-video { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- STYLE HỘP QUÀ --- */
+/* 3. Style Hộp quà */
 #gift-box {
     position: absolute;
     top: 50%; left: 50%;
-    transform: translate(-50%, -50%); /* Căn chính giữa màn hình */
-    font-size: 100px; /* Kích thước hộp quà */
+    transform: translate(-50%, -50%); /* Căn giữa */
+    font-size: 100px; /* Kích thước icon */
     cursor: pointer;
-    z-index: 20; /* Nằm đè lên video */
+    z-index: 20;
     
-    /* Hiệu ứng lắc lư liên tục */
-    animation: shake 2s infinite;
+    /* Animation lắc lư */
+    animation: shake 2s infinite; 
 }
 
 @keyframes shake {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
-    25% { transform: translate(-50%, -50%) rotate(-10deg); }
-    50% { transform: translate(-50%, -50%) rotate(10deg); }
-    75% { transform: translate(-50%, -50%) rotate(-10deg); }
+    10% { transform: translate(-50%, -50%) rotate(-10deg); }
+    20% { transform: translate(-50%, -50%) rotate(10deg); }
+    30% { transform: translate(-50%, -50%) rotate(-10deg); }
+    40% { transform: translate(-50%, -50%) rotate(10deg); }
+    50% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(0deg); }
 }
 
-/* --- Màn hình 3 (Kết thúc) --- */
+/* 4. Màn hình cuối (Nền đồng cỏ) */
 #final-scene {
     width: 100%; height: 100%;
     background: url('dongco.png') no-repeat center center/cover;
