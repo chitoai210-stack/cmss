@@ -23,40 +23,33 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 #gift-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; cursor: pointer; z-index: 20; animation: shake 2s infinite; }
 @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); } 20%, 40% { transform: translate(-50%, -50%) rotate(10deg); } 50% { transform: translate(-50%, -50%) rotate(0deg); } }
 
-/* --- STYLE CHO GAME (MỚI) --- */
-
-/* Màn hình chứa game */
+/* --- STYLE GAME --- */
 #final-scene {
     width: 100%; height: 100%;
-    /* Đổi nền sang idol.webp */
     background: url('idol.webp') no-repeat center center/cover;
     position: absolute; top: 0; left: 0; z-index: 30;
-    overflow: hidden; /* Không cho chuột chạy ra ngoài khung */
+    overflow: hidden;
 }
 
-/* Hiệu ứng con trỏ búa */
+/* HIỆU ỨNG CON TRỎ BÚA (CẬP NHẬT) */
 .game-cursor {
-    /* Dùng tạm hình hồng tâm. Nếu có file hammer.png thì đổi thành dòng dưới */
-    cursor: crosshair; 
-    /* cursor: url('hammer.png'), auto;  <-- Bỏ comment dòng này nếu bạn có file ảnh búa */
+    /* Ưu tiên dùng ảnh harmer.png, nếu lỗi thì dùng hình chữ thập */
+    cursor: url('harmer.png'), crosshair; 
 }
 
-/* Bảng điểm */
 #score-board {
     position: absolute; top: 20px; left: 20px;
     color: #fff; font-size: 24px; font-weight: bold;
-    background: rgba(0,0,0,0.6); /* Nền đen bán trong suốt để dễ nhìn chữ */
-    padding: 10px 20px; border-radius: 15px;
-    z-index: 40; pointer-events: none; /* Không cho click vào bảng điểm */
+    background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 15px;
+    z-index: 40; pointer-events: none;
 }
 
-/* Style cho con "chuột" (to2.png) */
+/* Con chuột (to2.png) */
 .mole {
     position: absolute;
-    width: 120px; /* Kích thước hiển thị của to2.png, bạn có thể chỉnh sửa */
-    height: auto;
-    cursor: crosshair; /* Đảm bảo trỏ vào chuột vẫn là hình cái búa */
-    /* Hiệu ứng xuất hiện: Phóng to từ 0 lên 1 */
+    width: 120px; height: auto;
+    /* Khi di chuột vào con mole, vẫn giữ hình cái búa */
+    cursor: url('harmer.png'), crosshair;
     animation: popUp 0.3s ease-out forwards;
 }
 
@@ -65,14 +58,12 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     to { transform: scale(1); opacity: 1; }
 }
 
-/* Màn hình chiến thắng */
 #victory-screen {
     width: 100%; height: 100%;
     display: flex; justify-content: center; align-items: center;
-    background: rgba(0,0,0,0.85); /* Nền tối phủ lên */
-    position: absolute; top: 0; left: 0; z-index: 100;
+    background: rgba(0,0,0,0.85); position: absolute; top: 0; left: 0; z-index: 100;
 }
 #victory-screen h1 {
     color: gold; font-size: 4rem; text-align: center; line-height: 1.5;
-    animation: shake 1s infinite; /* Tận dụng lại hiệu ứng lắc lư */
+    animation: shake 1s infinite;
 }
