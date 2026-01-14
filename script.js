@@ -9,19 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let count = 5;
 
-    // Phát tiếng beep đầu tiên (số 5)
-    playBeep();
+    // --- LOGIC ĐẾM NGƯỢC ---
+    
+    // Phát tiếng beep cho số 5 đầu tiên
+    playBeep(); 
 
     const timer = setInterval(() => {
-        count--;
+        count--; // Giảm số
 
         if (count > 0) {
-            // Chỉ cập nhật số và beep nếu > 0
-            updateDisplay(count);
+            // Còn lớn hơn 0 thì hiện số và kêu BEEP
+            countdownNumber.innerText = count;
             playBeep();
+            
+            // Hiệu ứng zoom nhẹ
+            countdownNumber.style.transform = "scale(1.2)";
+            setTimeout(() => countdownNumber.style.transform = "scale(1)", 200);
+
         } else if (count === 0) {
-            // Đến số 0: Chỉ cập nhật số, KHÔNG BEEP
-            updateDisplay(count);
+            // Nếu bằng 0: Chỉ hiện số, KHÔNG kêu beep nữa
+            countdownNumber.innerText = count;
             
             // Đợi 1 giây ở số 0 rồi chuyển cảnh
             setTimeout(() => {
@@ -31,42 +38,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 1000);
 
-    function updateDisplay(num) {
-        countdownNumber.innerText = num;
-        countdownNumber.style.transform = "scale(1.2)";
-        setTimeout(() => countdownNumber.style.transform = "scale(1)", 200);
-    }
-
+    // Hàm phát tiếng beep
     function playBeep() {
         if(beepSound) {
             beepSound.currentTime = 0;
-            beepSound.play().catch(e => {});
+            beepSound.play().catch(() => {}); // Bỏ qua lỗi nếu trình duyệt chặn
         }
     }
 
+    // --- CHUYỂN QUA MÀN HÌNH VIDEO ---
     function startMainScene() {
         countdownScreen.classList.add('hidden');
         mainScene.classList.remove('hidden');
 
+        // Phát video
         if (birthdayVideo) {
-            birthdayVideo.play().catch(e => {
-                birthdayVideo.muted = true; 
+            birthdayVideo.play().catch(() => {
+                // Nếu lỗi autoplay (do chưa click), thử mute để chạy
+                birthdayVideo.muted = true;
                 birthdayVideo.play();
             });
         }
 
-        // --- CÀI ĐẶT THỜI GIAN HIỆN HỘP QUÀ ---
-        // Vì mình không biết clip của bạn dài bao nhiêu và 3 con đi mất mấy giây
-        // Bạn hãy chỉnh số 8000 bên dưới (tức là 8 giây) cho khớp nhé!
+        // --- ĐÚNG 5 GIÂY SAU THÌ HIỆN HỘP QUÀ ---
         setTimeout(() => {
             giftBox.classList.remove('hidden');
-        }, 8000); 
+        }, 5000); // 5000ms = 5 giây
     }
 
-    // Sự kiện click vào hộp quà
+    // --- SỰ KIỆN CLICK HỘP QUÀ ---
     giftBox.addEventListener('click', () => {
+        // Tắt video (cho đỡ ồn)
+        if(birthdayVideo) birthdayVideo.pause();
+        
         // Ẩn màn hình video
         mainScene.classList.add('hidden');
+        
         // Hiện màn hình cuối (đồng cỏ)
         finalScene.classList.remove('hidden');
     });
