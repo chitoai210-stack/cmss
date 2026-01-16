@@ -53,29 +53,81 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     background: url('idol.webp') no-repeat center center/cover; 
     position: absolute; top: 0; left: 0; z-index: 30; 
     overflow: hidden; 
-    cursor: none; /* Ẩn con trỏ chuột thật để hiện búa giả */
+    cursor: none; 
 }
-
-/* Cây búa giả lập */
 #custom-hammer {
-    position: absolute;
-    width: 100px; /* Điều chỉnh kích thước búa tùy ý */
-    pointer-events: none; /* Để click xuyên qua búa trúng con chuột */
-    z-index: 1000;
-    transform-origin: bottom right; /* Xoay từ cán búa */
-    transition: transform 0.1s ease;
-    left: 50%; top: 50%; /* Vị trí ban đầu */
+    position: absolute; width: 100px; pointer-events: none; z-index: 1000;
+    transform-origin: bottom right; transition: transform 0.1s ease;
+    left: 50%; top: 50%;
 }
-
-/* Hiệu ứng đập búa */
-.hammer-down {
-    transform: rotate(-45deg);
-}
-
+.hammer-down { transform: rotate(-45deg); }
 #score-board { position: absolute; top: 20px; left: 20px; color: #fff; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 15px; z-index: 40; pointer-events: none; }
 .mole { position: absolute; width: 120px; height: auto; cursor: none; animation: popUp 0.3s ease-out forwards; z-index: 50;}
 @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* 5. Chiến thắng */
-#victory-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.85); position: absolute; top: 0; left: 0; z-index: 100; cursor: default; }
-#victory-screen h1 { color: gold; font-size: 4rem; text-align: center; line-height: 1.5; animation: shake 1s infinite; }
+/* 5. Chiến thắng & Tin nhắn (MỚI) */
+#victory-screen { 
+    width: 100%; height: 100%; 
+    position: absolute; top: 0; left: 0; z-index: 100; 
+    /* Đổi nền thành nento.png */
+    background: url('nento.png') no-repeat center center/cover; 
+    overflow: hidden; /* Không cho scroll cả trang */
+}
+
+/* Ảnh tn.jpg */
+#sliding-img {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 80vh; max-width: 80vw;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    border-radius: 10px;
+    opacity: 0; /* Ẩn ban đầu */
+    transition: all 1.5s ease-in-out;
+    z-index: 101;
+}
+
+/* Class kích hoạt trượt sang trái */
+.slide-left {
+    left: 20% !important; /* Trượt về phía trái màn hình */
+    opacity: 1 !important;
+}
+/* Class chỉ hiện giữa (lúc đầu) */
+.show-center {
+    opacity: 1 !important;
+}
+
+/* Khung chứa tin nhắn */
+#message-container {
+    position: absolute;
+    top: 10%; right: 5%; bottom: 10%;
+    width: 55%; /* Chiếm phần bên phải */
+    overflow-y: auto; /* Cho phép cuộn nếu chữ quá dài */
+    padding: 20px;
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 102;
+    display: flex; flex-direction: column; gap: 10px;
+}
+/* Từng dòng tin nhắn */
+.msg-line {
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+.msg-visible {
+    opacity: 1; transform: translateY(0);
+}
+
+/* Canvas Pháo hoa */
+#fireworks {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 200;
+}
+
+/* Responsive cho Mobile: Chữ đè lên ảnh mờ */
+@media (max-width: 768px) {
+    .slide-left { left: 50% !important; opacity: 0.3 !important; }
+    #message-container { width: 90%; right: 5%; }
+}
