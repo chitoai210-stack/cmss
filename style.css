@@ -65,7 +65,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 .mole { position: absolute; width: 120px; height: auto; cursor: none; animation: popUp 0.3s ease-out forwards; z-index: 50;}
 @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* 5. Chiến thắng & Tin nhắn (ĐÃ CHỈNH SỬA) */
+/* 5. Chiến thắng & Tin nhắn */
 #victory-screen { 
     width: 100%; height: 100%; 
     position: absolute; top: 0; left: 0; z-index: 100; 
@@ -78,7 +78,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    max-height: 75vh; /* Giảm nhẹ chiều cao để không bị quá to */
+    max-height: 75vh; 
     max-width: 75vw;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
     border-radius: 10px;
@@ -87,44 +87,53 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     z-index: 101;
 }
 
-/* KHI TRƯỢT SANG TRÁI (Đã chỉnh left để chừa viền nền) */
+/* Trượt ảnh sang trái */
 .slide-left {
-    left: 25% !important; /* Đẩy sang phải một chút (cũ là 20%) để lộ nền trái */
+    left: 25% !important; 
     opacity: 1 !important;
 }
 .show-center {
     opacity: 1 !important;
 }
 
-/* Khung chứa tin nhắn (Đã chỉnh Font & Nền) */
+/* Khung chứa tin nhắn - TRẠNG THÁI BAN ĐẦU: ẨN BÊN PHẢI */
 #message-container {
     position: absolute;
     top: 10%; right: 5%; bottom: 10%;
-    width: 45%; /* Giảm width để không đè lên ảnh */
+    width: 45%; 
+    
+    /* Đẩy khung ra khỏi màn hình bên phải 120% */
+    transform: translateX(150%);
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Hiệu ứng trượt mượt */
+
     overflow-y: auto;
     padding: 25px;
     
-    /* Font Times New Roman, Size to hơn 14px gốc web một chút để dễ đọc */
     font-family: 'Times New Roman', serif;
-    font-size: 1.2rem; /* Tương đương cỡ 14-16 trong Word */
+    font-size: 1.2rem; 
     line-height: 1.6;
-    color: #fff; /* Chữ trắng */
+    color: #fff; 
     
-    /* Thêm nền mờ đen để chữ nổi bật trên nền Totoro */
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.6); /* Nền đen mờ 60% */
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 
     z-index: 102;
     display: flex; flex-direction: column; gap: 10px;
 }
 
+/* Class để kích hoạt trượt khung vào */
+.box-visible {
+    transform: translateX(0) !important; /* Trở về vị trí gốc */
+}
+
+/* Từng dòng tin nhắn */
 .msg-line {
-    opacity: 0; transform: translateY(20px);
-    transition: all 0.8s ease;
+    opacity: 0; 
+    transition: opacity 1s ease; /* Chỉ hiện dần lên, không cần bay lên nữa */
 }
 .msg-visible {
-    opacity: 1; transform: translateY(0);
+    opacity: 1;
 }
 
 /* Canvas Pháo hoa */
@@ -135,7 +144,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 
 /* Responsive Mobile */
 @media (max-width: 768px) {
-    /* Trên điện thoại thì cho ảnh mờ đi và nằm giữa để chữ đè lên */
     .slide-left { left: 50% !important; opacity: 0.2 !important; }
-    #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; }
+    #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; transform: translateY(150%); } /* Mobile cho trượt từ dưới lên cho đẹp */
+    .box-visible { transform: translateY(0) !important; }
 }
