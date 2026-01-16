@@ -65,13 +65,12 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 .mole { position: absolute; width: 120px; height: auto; cursor: none; animation: popUp 0.3s ease-out forwards; z-index: 50;}
 @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* 5. Chiến thắng & Tin nhắn (MỚI) */
+/* 5. Chiến thắng & Tin nhắn (ĐÃ CHỈNH SỬA) */
 #victory-screen { 
     width: 100%; height: 100%; 
     position: absolute; top: 0; left: 0; z-index: 100; 
-    /* Đổi nền thành nento.png */
     background: url('nento.png') no-repeat center center/cover; 
-    overflow: hidden; /* Không cho scroll cả trang */
+    overflow: hidden;
 }
 
 /* Ảnh tn.jpg */
@@ -79,39 +78,47 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    max-height: 80vh; max-width: 80vw;
+    max-height: 75vh; /* Giảm nhẹ chiều cao để không bị quá to */
+    max-width: 75vw;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
     border-radius: 10px;
-    opacity: 0; /* Ẩn ban đầu */
+    opacity: 0; 
     transition: all 1.5s ease-in-out;
     z-index: 101;
 }
 
-/* Class kích hoạt trượt sang trái */
+/* KHI TRƯỢT SANG TRÁI (Đã chỉnh left để chừa viền nền) */
 .slide-left {
-    left: 20% !important; /* Trượt về phía trái màn hình */
+    left: 25% !important; /* Đẩy sang phải một chút (cũ là 20%) để lộ nền trái */
     opacity: 1 !important;
 }
-/* Class chỉ hiện giữa (lúc đầu) */
 .show-center {
     opacity: 1 !important;
 }
 
-/* Khung chứa tin nhắn */
+/* Khung chứa tin nhắn (Đã chỉnh Font & Nền) */
 #message-container {
     position: absolute;
     top: 10%; right: 5%; bottom: 10%;
-    width: 55%; /* Chiếm phần bên phải */
-    overflow-y: auto; /* Cho phép cuộn nếu chữ quá dài */
-    padding: 20px;
-    color: #fff;
-    font-size: 1.1rem;
+    width: 45%; /* Giảm width để không đè lên ảnh */
+    overflow-y: auto;
+    padding: 25px;
+    
+    /* Font Times New Roman, Size to hơn 14px gốc web một chút để dễ đọc */
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2rem; /* Tương đương cỡ 14-16 trong Word */
     line-height: 1.6;
-    text-shadow: 1px 1px 2px #000;
+    color: #fff; /* Chữ trắng */
+    
+    /* Thêm nền mờ đen để chữ nổi bật trên nền Totoro */
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
     z-index: 102;
     display: flex; flex-direction: column; gap: 10px;
 }
-/* Từng dòng tin nhắn */
+
 .msg-line {
     opacity: 0; transform: translateY(20px);
     transition: all 0.8s ease;
@@ -126,8 +133,9 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     pointer-events: none; z-index: 200;
 }
 
-/* Responsive cho Mobile: Chữ đè lên ảnh mờ */
+/* Responsive Mobile */
 @media (max-width: 768px) {
-    .slide-left { left: 50% !important; opacity: 0.3 !important; }
-    #message-container { width: 90%; right: 5%; }
+    /* Trên điện thoại thì cho ảnh mờ đi và nằm giữa để chữ đè lên */
+    .slide-left { left: 50% !important; opacity: 0.2 !important; }
+    #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; }
 }
