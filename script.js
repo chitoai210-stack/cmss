@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         runCountdown();
     });
 
-    // --- 3. ĐẾM NGƯỢC (KHÔNG TIẾNG BEEP) ---
+    // --- 3. ĐẾM NGƯỢC ---
     let count = 5;
     let timer = null;
     function runCountdown() {
@@ -106,10 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
         hammer.style.left = (e.pageX - 20) + 'px'; 
         hammer.style.top = (e.pageY - 50) + 'px';
     });
+    
+    // YÊU CẦU 2: Đã bỏ đoạn lệnh phát tiếng popSound ở đây
     document.addEventListener('mousedown', () => {
         hammer.classList.add('hammer-down');
-        if(isGameRunning && popSound) { popSound.currentTime = 0; popSound.play().catch(()=>{}); }
     });
+    
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
@@ -135,19 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxX = finalScene.offsetWidth - 120; 
         const maxY = finalScene.offsetHeight - 120;
 
-        // --- CHỈNH SỬA VỊ TRÍ CHUỘT TẠI ĐÂY ---
+        // --- YÊU CẦU 1: CHỈNH VỊ TRÍ CHUỘT ---
         if (score >= 5) {
-            // YÊU CẦU: GÓC TRÊN BÊN TRÁI (3/4 chiều ngang ý là lệch về trái, 1/3 chiều dọc)
-            // Tôi set vùng xuất hiện từ 5% đến 35% bề ngang màn hình (Bên trái)
-            const minFaceX = finalScene.offsetWidth * 0.05; 
-            const maxFaceX = finalScene.offsetWidth * 0.35;
+            // CỐ ĐỊNH CHÍNH XÁC TẠI 1 ĐIỂM
+            // 35% Chiều ngang (tính từ trái sang)
+            randomX = finalScene.offsetWidth * 0.35; 
             
-            // Và từ 5% đến 35% chiều dọc màn hình (Góc trên)
-            const minFaceY = finalScene.offsetHeight * 0.05;
-            const maxFaceY = finalScene.offsetHeight * 0.35;
-
-            randomX = Math.floor(minFaceX + Math.random() * (maxFaceX - minFaceX));
-            randomY = Math.floor(minFaceY + Math.random() * (maxFaceY - minFaceY));
+            // 30% Chiều dọc (tính từ trên xuống)
+            randomY = finalScene.offsetHeight * 0.30;
         } else {
             // 5 con đầu xuất hiện ngẫu nhiên toàn màn hình
             randomX = Math.floor(Math.random() * maxX);
@@ -158,6 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mole.style.top = randomY + 'px';
 
         mole.addEventListener('mousedown', function() {
+            // Chỉ phát tiếng kêu khi đập TRÚNG chuột
+            if(popSound) { popSound.currentTime = 0; popSound.play().catch(()=>{}); }
+            
             score++;
             scoreDisplay.innerText = score;
             this.remove();
@@ -199,10 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     slidingImg.classList.remove('show-center');
                     slidingImg.classList.add('slide-left');
                     
-                    // Khung đen trượt từ phải vào
                     setTimeout(() => {
                         messageContainer.classList.add('box-visible');
-                        // Hiện chữ
                         setTimeout(() => {
                             showMessagesRecursive(0);
                         }, 1000);
