@@ -85,12 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownScreen.classList.add('hidden');
         mainScene.classList.remove('hidden');
         
-        if (birthdayVideo) { birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); }
-        
-        // --- YÊU CẦU 3: HỘP QUÀ XUẤT HIỆN SAU 1.5 GIÂY ---
-        setTimeout(() => { 
-            giftBox.classList.remove('hidden'); 
-        }, 1500); 
+        if (birthdayVideo) { 
+            birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); 
+            
+            // --- YÊU CẦU 1: HỘP QUÀ HIỆN SAU KHI VIDEO KẾT THÚC 2 GIÂY ---
+            birthdayVideo.onended = () => {
+                setTimeout(() => {
+                    giftBox.classList.remove('hidden');
+                }, 2000); // Chờ 2 giây sau khi video hết
+            };
+        }
     }
 
     giftBox.addEventListener('click', () => {
@@ -110,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
-    // --- YÊU CẦU 1: TỔNG 15 CON (5 con đầu + 10 con cuối) ---
-    const targetScore = 15; 
+    // --- YÊU CẦU 3: TỔNG 25 CON (5 thường + 20 nhanh) ---
+    const targetScore = 25; 
     let isGameRunning = false;
     let gameInterval = null;
-    let isSpeedUp = false; // Cờ kiểm tra đã tăng tốc chưa
+    let isSpeedUp = false; 
 
     function startGame() {
         if(bgMusic) { bgMusic.volume = 0.3; } 
@@ -129,16 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function spawnMole() {
         if (!isGameRunning) return;
 
-        // --- YÊU CẦU 1 & 2: LOGIC TĂNG TỐC VÀ TROLL ---
+        // --- GIAI ĐOẠN TĂNG TỐC (SAU 5 CON ĐẦU) ---
         if (score >= 5) {
-            // Nếu chưa tăng tốc thì reset interval để chạy nhanh hơn (0.8s)
             if (!isSpeedUp) {
                 clearInterval(gameInterval);
-                gameInterval = setInterval(spawnMole, 800); // 0.8 giây
+                gameInterval = setInterval(spawnMole, 800); // Tốc độ 0.8s
                 isSpeedUp = true;
             }
 
-            // Xuất hiện chữ troll
             spawnTrollText();
         }
 
@@ -164,11 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mole.style.left = randomX + 'px';
         mole.style.top = randomY + 'px';
 
-        // Thời gian tồn tại của chuột cũng giảm đi khi tăng tốc
         let duration = isSpeedUp ? 800 : 1400;
 
         mole.addEventListener('mousedown', function() {
-            // KHÔNG CÓ TIẾNG POP
             score++;
             scoreDisplay.innerText = score;
             this.remove();
@@ -179,37 +179,26 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if (mole.parentElement) mole.remove(); }, duration); 
     }
 
-    // --- HÀM TẠO CHỮ TROLL ---
+    // --- YÊU CẦU 2: CHỮ TROLL GIỮ YÊN KHÔNG BIẾN MẤT ---
     function spawnTrollText() {
-        const phrases = ["Đập dzô mặt idol", "đập dô, đập dô", "A á ớ", "Mạnh lên !"];
+        const phrases = ["Đập dzô mặt idol", "đập dô, đập dô", "A á ớ", "Mạnh lên !", "Bốp !!"];
         const text = document.createElement('div');
         text.innerText = phrases[Math.floor(Math.random() * phrases.length)];
         
-        // Style ngẫu nhiên cho chữ
         text.style.position = 'absolute';
-        text.style.left = (Math.random() * 80 + 10) + '%'; // 10% - 90% màn hình
+        text.style.left = (Math.random() * 80 + 10) + '%'; 
         text.style.top = (Math.random() * 80 + 10) + '%';
-        text.style.color = Math.random() > 0.5 ? '#ff0055' : '#ffcc00'; // Đỏ hoặc Vàng
-        text.style.fontSize = (Math.random() * 20 + 20) + 'px'; // 20px - 40px
+        text.style.color = Math.random() > 0.5 ? '#ff0055' : '#ffcc00'; 
+        text.style.fontSize = (Math.random() * 20 + 20) + 'px'; 
         text.style.fontWeight = 'bold';
         text.style.fontFamily = 'Arial, sans-serif';
-        text.style.transform = `rotate(${Math.random() * 60 - 30}deg)`; // Xoay nghiêng
-        text.style.zIndex = '45'; // Nằm dưới chuột nhưng trên nền
-        text.style.pointerEvents = 'none'; // Không chặn click chuột
+        text.style.transform = `rotate(${Math.random() * 60 - 30}deg)`; 
+        text.style.zIndex = '45'; 
+        text.style.pointerEvents = 'none'; 
         text.style.textShadow = '2px 2px 0 #000';
-        text.style.transition = 'all 0.5s ease-out';
         
+        // Chỉ thêm vào, KHÔNG XÓA
         finalScene.appendChild(text);
-
-        // Hiệu ứng bay lên và biến mất
-        setTimeout(() => {
-            text.style.transform += ' scale(1.5)';
-            text.style.opacity = '0';
-        }, 100);
-
-        setTimeout(() => {
-            if(text.parentElement) text.remove();
-        }, 600);
     }
 
     // --- 5. END GAME & MESSAGE ---
@@ -230,13 +219,13 @@ document.addEventListener('DOMContentLoaded', () => {
         isGameRunning = false;
         clearInterval(gameInterval);
         document.querySelectorAll('.mole').forEach(m => m.remove());
-        // Xóa sạch chữ troll nếu còn sót
-        finalScene.querySelectorAll('div').forEach(d => {
-            if(d.id !== 'score-board') d.remove(); 
-        });
+        
+        // Ẩn búa
         hammer.classList.add('hidden');
 
+        // Chuyển cảnh
         setTimeout(() => {
+            // Khi ẩn finalScene, các chữ troll (con của finalScene) cũng sẽ ẩn theo
             finalScene.classList.add('hidden');
             victoryScreen.classList.remove('hidden');
             if(bgMusic) bgMusic.volume = 1.0; 
