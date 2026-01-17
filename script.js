@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "Có thể là ngày mai, 1 tháng, 1 năm, 10 năm hay 20 năm nữa, tất cả chúng ta sẽ còn ở bên nhau, có thể không, có thể sẽ quên đi nhau theo dòng thời gian, nhưng với mình, những điều chúng ta đã từng, những kỷ niệm đó sẽ không bị lãng quên và sẽ mãi ở 1 góc của não bộ. (gì chứ tui say đắm trong quá khứ lắm, vui buồn gì cũng nhớ)", delay: 9000 },
         { text: "Nếu sau này không ai chúc mừng sinh nhật bạn nữa, thề với bạn là sẽ luôn có 1 người ghi nhớ điều đó, chỉ cần . 1 cái là sẽ có lời chúc tới ngay và luôn ! (thặc ra là nhớ hết, tại tùy hoàn cảnh có chúc được hay ko thoai)", delay: 7000 },
         { text: "Nãy giờ nói cũng hơi nhiều, nhưng chúc thì cũng như mọi lần. Cầu mong cho bạn luôn được bình an và khỏe mạnh (à thì sức khỏe thôi chứ tiền tài học hành tự thân lo nhóe, ngắn gọn cho nó linh)", delay: 5000 },
-        { text: "Bonus: thật ra tụi mình ko có hình nào đẹp hết, nên mò trên trang cá nhân mới có hình", delay: 3000 },
-        { text: "Hết rồi đó. SINH NHỰT ZUI ZẺ NHE <3", delay: 2000 },
-        { text: "Tiểu Ngân Ngân", delay: 1500 }
+        { text: "Bonus: thật ra tụi mình ko có hình nào đẹp hết, nên mò trên trang cá nhân mới có hình", delay: 5000 },
+        { text: "Hết rồi đó. SINH NHỰT ZUI ZẺ NHE <3", delay: 3000 },
+        { text: "Tiểu Ngân Ngân mộng mơ", delay: 3000 }
     ];
 
     function endGame() {
@@ -344,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
+
 
 
 
