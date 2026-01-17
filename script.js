@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     passInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPass(); });
 
     function checkPass() {
-        if (passInput.value === 'CT011002') { 
+        if (passInput.value === 'TN130203') { 
             passwordScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             
@@ -159,9 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (score >= 5) {
             // --- YÊU CẦU 2: GIẢM 2% VỊ TRÍ ---
             // Cũ: 30% ngang, 25% dọc
-            // Mới: 28% ngang, 23% dọc
-            randomX = finalScene.offsetWidth * 0.28; 
-            randomY = finalScene.offsetHeight * 0.23;
+            // Mới: 29% ngang, 22% dọc
+            randomX = finalScene.offsetWidth * 0.29; 
+            randomY = finalScene.offsetHeight * 0.22;
         } else {
             // Ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
@@ -344,3 +344,4 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
+
