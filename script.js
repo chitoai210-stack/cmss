@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Game Elements
     const finalScene = document.getElementById('final-scene');
     const scoreDisplay = document.getElementById('score');
-    const popSound = document.getElementById('pop-sound');
+    const popSound = document.getElementById('pop-sound'); // Vẫn giữ để mồi audio nếu cần, nhưng không phát khi đập
     const hammer = document.getElementById('custom-hammer');
 
     // Victory Elements
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownScreen.classList.remove('hidden');
         ringCircle.classList.add('animate-ring');
         
-        // Mồi âm thanh
+        // Mồi âm thanh (giữ lại để kích hoạt AudioContext, nhưng tắt ngay)
         if(popSound) { popSound.muted = true; popSound.play().catch(()=>{}); popSound.pause(); popSound.currentTime=0; popSound.muted = false; }
         if(bgMusic && bgMusic.paused) { bgMusic.play().catch(()=>{}); }
         
@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hammer.style.top = (e.pageY - 50) + 'px';
     });
     
-    // YÊU CẦU 2: Đã bỏ đoạn lệnh phát tiếng popSound ở đây
     document.addEventListener('mousedown', () => {
         hammer.classList.add('hammer-down');
     });
@@ -137,16 +136,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxX = finalScene.offsetWidth - 120; 
         const maxY = finalScene.offsetHeight - 120;
 
-        // --- YÊU CẦU 1: CHỈNH VỊ TRÍ CHUỘT ---
+        // --- YÊU CẦU 2: VỊ TRÍ 5 CON CUỐI (30% Ngang, 25% Dọc) ---
         if (score >= 5) {
-            // CỐ ĐỊNH CHÍNH XÁC TẠI 1 ĐIỂM
-            // 29% Chiều ngang (tính từ trái sang)
-            randomX = finalScene.offsetWidth * 0.35; 
+            // 30% Chiều ngang
+            randomX = finalScene.offsetWidth * 0.30; 
             
-            // 20% Chiều dọc (tính từ trên xuống)
-            randomY = finalScene.offsetHeight * 0.30;
+            // 25% Chiều dọc
+            randomY = finalScene.offsetHeight * 0.25;
         } else {
-            // 5 con đầu xuất hiện ngẫu nhiên toàn màn hình
+            // 5 con đầu xuất hiện ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
             randomY = Math.floor(Math.random() * maxY);
         }
@@ -155,8 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
         mole.style.top = randomY + 'px';
 
         mole.addEventListener('mousedown', function() {
-            // Chỉ phát tiếng kêu khi đập TRÚNG chuột
-            if(popSound) { popSound.currentTime = 0; popSound.play().catch(()=>{}); }
+            // --- YÊU CẦU 1: BỎ TIẾNG POP ---
+            // Đã xóa dòng lệnh play() popSound tại đây.
             
             score++;
             scoreDisplay.innerText = score;
@@ -212,7 +210,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showMessagesRecursive(index) {
         if (index >= messages.length) {
+            // Bắt đầu bắn pháo hoa
             startFireworks();
+
+            // --- YÊU CẦU 3: HIỆU ỨNG KẾT THÚC SAU 2 GIÂY ---
+            setTimeout(() => {
+                // 1. Làm mờ và ẩn khung tin nhắn
+                messageContainer.style.transition = "opacity 2s ease"; 
+                messageContainer.style.opacity = "0";
+
+                // 2. Hình tn chạy từ trái về trung tâm một cách chậm rãi
+                // Gỡ class slide-left để nó về lại left: 50%
+                slidingImg.classList.remove('slide-left');
+                
+                // Ghi đè transition thành 5 giây (chậm rãi)
+                slidingImg.style.transition = "all 5s ease-in-out";
+                
+                // Đảm bảo opacity = 1
+                slidingImg.classList.add('show-center');
+
+            }, 2000); // Đợi 2 giây sau khi dòng cuối hiện xong
+
             return;
         }
 
@@ -289,5 +307,3 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
-
-
