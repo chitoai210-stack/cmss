@@ -88,12 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (birthdayVideo) { 
             birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); 
             
-            // --- YÊU CẦU 1: HỘP QUÀ HIỆN SAU KHI VIDEO KẾT THÚC 2 GIÂY ---
-            birthdayVideo.onended = () => {
-                setTimeout(() => {
+            // --- YÊU CẦU 1: HIỆN HỘP QUÀ TRƯỚC KHI KẾT THÚC 7 GIÂY ---
+            let giftShown = false;
+            birthdayVideo.addEventListener('timeupdate', () => {
+                // Kiểm tra nếu còn <= 7 giây là hết video và chưa hiện quà
+                if (birthdayVideo.duration && (birthdayVideo.duration - birthdayVideo.currentTime <= 7) && !giftShown) {
                     giftBox.classList.remove('hidden');
-                }, 2000); // Chờ 2 giây sau khi video hết
-            };
+                    giftShown = true;
+                }
+            });
         }
     }
 
@@ -114,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
-    // --- YÊU CẦU 3: TỔNG 25 CON (5 thường + 20 nhanh) ---
+    // TỔNG 25 CON (5 thường + 20 nhanh)
     const targetScore = 25; 
     let isGameRunning = false;
     let gameInterval = null;
@@ -154,9 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxY = finalScene.offsetHeight - 120;
 
         if (score >= 5) {
-            // Vị trí cố định (30% ngang, 25% dọc)
-            randomX = finalScene.offsetWidth * 0.30; 
-            randomY = finalScene.offsetHeight * 0.25;
+            // --- YÊU CẦU 2: GIẢM 2% VỊ TRÍ ---
+            // Cũ: 30% ngang, 25% dọc
+            // Mới: 28% ngang, 23% dọc
+            randomX = finalScene.offsetWidth * 0.28; 
+            randomY = finalScene.offsetHeight * 0.23;
         } else {
             // Ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
@@ -179,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if (mole.parentElement) mole.remove(); }, duration); 
     }
 
-    // --- YÊU CẦU 2: CHỮ TROLL GIỮ YÊN KHÔNG BIẾN MẤT ---
+    // CHỮ TROLL GIỮ YÊN KHÔNG BIẾN MẤT
     function spawnTrollText() {
         const phrases = ["Đập dzô mặt idol", "đập dô, đập dô", "A á ớ", "Mạnh lên !", "Bốp !!"];
         const text = document.createElement('div');
