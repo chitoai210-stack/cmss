@@ -140,10 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- YÊU CẦU 1: CHỈNH VỊ TRÍ CHUỘT ---
         if (score >= 5) {
             // CỐ ĐỊNH CHÍNH XÁC TẠI 1 ĐIỂM
-            // 33% Chiều ngang (tính từ trái sang)
+            // 29% Chiều ngang (tính từ trái sang)
             randomX = finalScene.offsetWidth * 0.35; 
             
-            // 26% Chiều dọc (tính từ trên xuống)
+            // 20% Chiều dọc (tính từ trên xuống)
             randomY = finalScene.offsetHeight * 0.30;
         } else {
             // 5 con đầu xuất hiện ngẫu nhiên toàn màn hình
@@ -289,4 +289,5 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
+
 
