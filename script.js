@@ -138,10 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- YÊU CẦU 2: VỊ TRÍ 5 CON CUỐI (30% Ngang, 25% Dọc) ---
         if (score >= 5) {
-            // 32% Chiều ngang
+            // 30% Chiều ngang
             randomX = finalScene.offsetWidth * 0.32; 
             
-            // 23% Chiều dọc
+            // 21% Chiều dọc
             randomY = finalScene.offsetHeight * 0.23;
         } else {
             // 5 con đầu xuất hiện ngẫu nhiên
@@ -307,4 +307,5 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
+
 
