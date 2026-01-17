@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Game Elements
     const finalScene = document.getElementById('final-scene');
     const scoreDisplay = document.getElementById('score');
-    const popSound = document.getElementById('pop-sound'); // Vẫn giữ để mồi audio nếu cần, nhưng không phát khi đập
+    const popSound = document.getElementById('pop-sound'); 
     const hammer = document.getElementById('custom-hammer');
 
     // Victory Elements
@@ -35,11 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             
-            // PHÁT NHẠC NGAY KHI NHẬP PASS
             if (bgMusic) {
                 bgMusic.volume = 1.0; 
                 bgMusic.play().catch(() => {
-                    console.log("Auto-play blocked, waiting for interaction.");
+                    console.log("Auto-play blocked.");
                 });
             }
         } else {
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownScreen.classList.remove('hidden');
         ringCircle.classList.add('animate-ring');
         
-        // Mồi âm thanh (giữ lại để kích hoạt AudioContext, nhưng tắt ngay)
+        // Mồi âm thanh
         if(popSound) { popSound.muted = true; popSound.play().catch(()=>{}); popSound.pause(); popSound.currentTime=0; popSound.muted = false; }
         if(bgMusic && bgMusic.paused) { bgMusic.play().catch(()=>{}); }
         
@@ -88,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (birthdayVideo) { birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); }
         
-        // HỘP QUÀ XUẤT HIỆN SAU 9 GIÂY
+        // --- YÊU CẦU 3: HỘP QUÀ XUẤT HIỆN SAU 1.5 GIÂY ---
         setTimeout(() => { 
             giftBox.classList.remove('hidden'); 
-        }, 9000); 
+        }, 1500); 
     }
 
     giftBox.addEventListener('click', () => {
@@ -107,26 +106,42 @@ document.addEventListener('DOMContentLoaded', () => {
         hammer.style.top = (e.pageY - 50) + 'px';
     });
     
-    document.addEventListener('mousedown', () => {
-        hammer.classList.add('hammer-down');
-    });
-    
+    document.addEventListener('mousedown', () => { hammer.classList.add('hammer-down'); });
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
-    const targetScore = 10;
+    // --- YÊU CẦU 1: TỔNG 15 CON (5 con đầu + 10 con cuối) ---
+    const targetScore = 15; 
     let isGameRunning = false;
     let gameInterval = null;
+    let isSpeedUp = false; // Cờ kiểm tra đã tăng tốc chưa
 
     function startGame() {
-        if(bgMusic) { bgMusic.volume = 0.3; } // Nhạc nhỏ lại
+        if(bgMusic) { bgMusic.volume = 0.3; } 
         score = 0; scoreDisplay.innerText = score;
         isGameRunning = true;
+        isSpeedUp = false;
+        
+        // Tốc độ ban đầu: 1.4s
         gameInterval = setInterval(spawnMole, 1400); 
     }
 
     function spawnMole() {
         if (!isGameRunning) return;
+
+        // --- YÊU CẦU 1 & 2: LOGIC TĂNG TỐC VÀ TROLL ---
+        if (score >= 5) {
+            // Nếu chưa tăng tốc thì reset interval để chạy nhanh hơn (0.8s)
+            if (!isSpeedUp) {
+                clearInterval(gameInterval);
+                gameInterval = setInterval(spawnMole, 800); // 0.8 giây
+                isSpeedUp = true;
+            }
+
+            // Xuất hiện chữ troll
+            spawnTrollText();
+        }
+
         const mole = document.createElement('img');
         mole.src = 'to2.png';
         mole.classList.add('mole');
@@ -136,15 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxX = finalScene.offsetWidth - 120; 
         const maxY = finalScene.offsetHeight - 120;
 
-        // --- YÊU CẦU 2: VỊ TRÍ 5 CON CUỐI (30% Ngang, 25% Dọc) ---
         if (score >= 5) {
-            // 30% Chiều ngang
-            randomX = finalScene.offsetWidth * 0.32; 
-            
-            // 21% Chiều dọc
-            randomY = finalScene.offsetHeight * 0.23;
+            // Vị trí cố định (30% ngang, 25% dọc)
+            randomX = finalScene.offsetWidth * 0.30; 
+            randomY = finalScene.offsetHeight * 0.25;
         } else {
-            // 5 con đầu xuất hiện ngẫu nhiên
+            // Ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
             randomY = Math.floor(Math.random() * maxY);
         }
@@ -152,10 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mole.style.left = randomX + 'px';
         mole.style.top = randomY + 'px';
 
+        // Thời gian tồn tại của chuột cũng giảm đi khi tăng tốc
+        let duration = isSpeedUp ? 800 : 1400;
+
         mole.addEventListener('mousedown', function() {
-            // --- YÊU CẦU 1: BỎ TIẾNG POP ---
-            // Đã xóa dòng lệnh play() popSound tại đây.
-            
+            // KHÔNG CÓ TIẾNG POP
             score++;
             scoreDisplay.innerText = score;
             this.remove();
@@ -163,7 +176,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         finalScene.appendChild(mole);
-        setTimeout(() => { if (mole.parentElement) mole.remove(); }, 1400); 
+        setTimeout(() => { if (mole.parentElement) mole.remove(); }, duration); 
+    }
+
+    // --- HÀM TẠO CHỮ TROLL ---
+    function spawnTrollText() {
+        const phrases = ["Đập dzô mặt idol", "đập dô, đập dô", "A á ớ", "Mạnh lên !"];
+        const text = document.createElement('div');
+        text.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        
+        // Style ngẫu nhiên cho chữ
+        text.style.position = 'absolute';
+        text.style.left = (Math.random() * 80 + 10) + '%'; // 10% - 90% màn hình
+        text.style.top = (Math.random() * 80 + 10) + '%';
+        text.style.color = Math.random() > 0.5 ? '#ff0055' : '#ffcc00'; // Đỏ hoặc Vàng
+        text.style.fontSize = (Math.random() * 20 + 20) + 'px'; // 20px - 40px
+        text.style.fontWeight = 'bold';
+        text.style.fontFamily = 'Arial, sans-serif';
+        text.style.transform = `rotate(${Math.random() * 60 - 30}deg)`; // Xoay nghiêng
+        text.style.zIndex = '45'; // Nằm dưới chuột nhưng trên nền
+        text.style.pointerEvents = 'none'; // Không chặn click chuột
+        text.style.textShadow = '2px 2px 0 #000';
+        text.style.transition = 'all 0.5s ease-out';
+        
+        finalScene.appendChild(text);
+
+        // Hiệu ứng bay lên và biến mất
+        setTimeout(() => {
+            text.style.transform += ' scale(1.5)';
+            text.style.opacity = '0';
+        }, 100);
+
+        setTimeout(() => {
+            if(text.parentElement) text.remove();
+        }, 600);
     }
 
     // --- 5. END GAME & MESSAGE ---
@@ -184,6 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
         isGameRunning = false;
         clearInterval(gameInterval);
         document.querySelectorAll('.mole').forEach(m => m.remove());
+        // Xóa sạch chữ troll nếu còn sót
+        finalScene.querySelectorAll('div').forEach(d => {
+            if(d.id !== 'score-board') d.remove(); 
+        });
         hammer.classList.add('hidden');
 
         setTimeout(() => {
@@ -210,26 +260,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showMessagesRecursive(index) {
         if (index >= messages.length) {
-            // Bắt đầu bắn pháo hoa
             startFireworks();
 
-            // --- YÊU CẦU 3: HIỆU ỨNG KẾT THÚC SAU 2 GIÂY ---
             setTimeout(() => {
                 // 1. Làm mờ và ẩn khung tin nhắn
                 messageContainer.style.transition = "opacity 2s ease"; 
                 messageContainer.style.opacity = "0";
 
-                // 2. Hình tn chạy từ trái về trung tâm một cách chậm rãi
-                // Gỡ class slide-left để nó về lại left: 50%
+                // 2. Hình tn chạy từ trái về trung tâm chậm rãi
                 slidingImg.classList.remove('slide-left');
-                
-                // Ghi đè transition thành 5 giây (chậm rãi)
                 slidingImg.style.transition = "all 5s ease-in-out";
-                
-                // Đảm bảo opacity = 1
                 slidingImg.classList.add('show-center');
 
-            }, 2000); // Đợi 2 giây sau khi dòng cuối hiện xong
+            }, 2000); 
 
             return;
         }
@@ -307,5 +350,3 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
-
-
