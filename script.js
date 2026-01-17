@@ -159,9 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (score >= 5) {
             // --- YÊU CẦU 2: GIẢM 2% VỊ TRÍ ---
             // Cũ: 30% ngang, 25% dọc
-            // Mới: 30% ngang, 19% dọc
+            // Mới: 30% ngang, 17% dọc
             randomX = finalScene.offsetWidth * 0.30; 
-            randomY = finalScene.offsetHeight * 0.19;
+            randomY = finalScene.offsetHeight * 0.17;
         } else {
             // Ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
@@ -344,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
+
 
 
 
