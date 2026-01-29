@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const passInput = document.getElementById('pass-input');
     const passBtn = document.getElementById('pass-btn');
     const passError = document.getElementById('pass-error');
+    
     const startScreen = document.getElementById('start-screen');
+    const startText = document.getElementById('start-text'); // Element chứa chữ ở màn hình start
+
     const countdownScreen = document.getElementById('countdown-screen');
     const countdownNumber = document.getElementById('countdown-number');
     const ringCircle = document.querySelector('.progress-ring__circle');
@@ -23,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const victoryScreen = document.getElementById('victory-screen');
     const slidingImg = document.getElementById('sliding-img');
     const messageContainer = document.getElementById('message-container');
+    const noteContainer = document.getElementById('note-container'); // Element Note Box
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
 
@@ -35,6 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             
+            // --- YÊU CẦU 1: Đổi nội dung màn hình Start ---
+            // Ngay khi mở: Hiện cảnh báo
+            startText.innerHTML = "Nên dùng laptop để xem sẽ trọn vẹn hơn - do thiết kế chưa được tối ưu trên iphone,ipad";
+            
+            // Sau 8 giây: Hiện hướng dẫn click
+            setTimeout(() => {
+                startText.innerHTML = "Có thể click vào màn hình để xem lại nhanh hơn";
+            }, 8000);
+
             if (bgMusic) {
                 bgMusic.volume = 1.0; 
                 bgMusic.play().catch(() => {
@@ -88,10 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (birthdayVideo) { 
             birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); 
             
-            // --- YÊU CẦU 1: HIỆN HỘP QUÀ TRƯỚC KHI KẾT THÚC 7 GIÂY ---
+            // --- YÊU CẦU 1 (Cũ): HIỆN HỘP QUÀ TRƯỚC KHI KẾT THÚC 7 GIÂY ---
             let giftShown = false;
             birthdayVideo.addEventListener('timeupdate', () => {
-                // Kiểm tra nếu còn <= 7 giây là hết video và chưa hiện quà
                 if (birthdayVideo.duration && (birthdayVideo.duration - birthdayVideo.currentTime <= 7) && !giftShown) {
                     giftBox.classList.remove('hidden');
                     giftShown = true;
@@ -117,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
-    // TỔNG 25 CON (5 thường + 20 nhanh)
     const targetScore = 25; 
     let isGameRunning = false;
     let gameInterval = null;
@@ -129,21 +140,18 @@ document.addEventListener('DOMContentLoaded', () => {
         isGameRunning = true;
         isSpeedUp = false;
         
-        // Tốc độ ban đầu: 1.4s
         gameInterval = setInterval(spawnMole, 1400); 
     }
 
     function spawnMole() {
         if (!isGameRunning) return;
 
-        // --- GIAI ĐOẠN TĂNG TỐC (SAU 5 CON ĐẦU) ---
         if (score >= 5) {
             if (!isSpeedUp) {
                 clearInterval(gameInterval);
-                gameInterval = setInterval(spawnMole, 800); // Tốc độ 0.8s
+                gameInterval = setInterval(spawnMole, 800); 
                 isSpeedUp = true;
             }
-
             spawnTrollText();
         }
 
@@ -157,13 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxY = finalScene.offsetHeight - 120;
 
         if (score >= 5) {
-            // --- YÊU CẦU 2: GIẢM 2% VỊ TRÍ ---
-            // Cũ: 30% ngang, 25% dọc
-            // Mới: 30% ngang, 17% dọc
+            // --- YÊU CẦU 2 (Cũ): GIẢM 2% VỊ TRÍ ---
             randomX = finalScene.offsetWidth * 0.30; 
             randomY = finalScene.offsetHeight * 0.17;
         } else {
-            // Ngẫu nhiên
             randomX = Math.floor(Math.random() * maxX);
             randomY = Math.floor(Math.random() * maxY);
         }
@@ -184,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if (mole.parentElement) mole.remove(); }, duration); 
     }
 
-    // CHỮ TROLL GIỮ YÊN KHÔNG BIẾN MẤT
     function spawnTrollText() {
         const phrases = ["Đập dzô mặt idol", "đập dô, đập dô", "A á ớ", "Mạnh lên !", "Bốp !!"];
         const text = document.createElement('div');
@@ -202,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
         text.style.pointerEvents = 'none'; 
         text.style.textShadow = '2px 2px 0 #000';
         
-        // Chỉ thêm vào, KHÔNG XÓA
         finalScene.appendChild(text);
     }
 
@@ -225,12 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(gameInterval);
         document.querySelectorAll('.mole').forEach(m => m.remove());
         
-        // Ẩn búa
         hammer.classList.add('hidden');
 
-        // Chuyển cảnh
         setTimeout(() => {
-            // Khi ẩn finalScene, các chữ troll (con của finalScene) cũng sẽ ẩn theo
             finalScene.classList.add('hidden');
             victoryScreen.classList.remove('hidden');
             if(bgMusic) bgMusic.volume = 1.0; 
@@ -261,10 +261,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageContainer.style.transition = "opacity 2s ease"; 
                 messageContainer.style.opacity = "0";
 
-                // 2. Hình tn chạy từ trái về trung tâm chậm rãi
+                // 2. Hình tn chạy từ trái về trung tâm
                 slidingImg.classList.remove('slide-left');
                 slidingImg.style.transition = "all 5s ease-in-out";
                 slidingImg.classList.add('show-center');
+
+                // --- YÊU CẦU 2: HIỆN Ô GHI CHÚ ---
+                // Sau khi hình bắt đầu chạy về giữa được 1 chút (hoặc đợi hình yên vị)
+                // Ở đây mình để hiện dần lên sau 2s (khi hình đang chạy về giữa)
+                setTimeout(() => {
+                    noteContainer.classList.remove('hidden');
+                    noteContainer.style.opacity = "1";
+                }, 2000);
 
             }, 2000); 
 
@@ -344,9 +352,3 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     });
 });
-
-
-
-
-
-
