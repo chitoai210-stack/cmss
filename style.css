@@ -39,7 +39,6 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     color: #fff; 
     text-align: center; 
     line-height: 1.5; 
-    /* Yêu cầu 3: Size 30 word ~ 40px web */
     font-family: 'Times New Roman', serif; 
     font-size: 40px; 
     font-weight: normal; 
@@ -48,7 +47,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 @keyframes blinker { 50% { opacity: 0; } }
 
 /* 2. Màn hình đếm ngược */
-#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; z-index: 10; background-color: #000; cursor: pointer; } /* Thêm cursor pointer để biết là bấm được */
+#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; z-index: 10; background-color: #000; cursor: pointer; } 
 .countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
 #countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
 .progress-ring__circle { stroke-dasharray: 754; stroke-dashoffset: 0; transform-origin: 50% 50%; transform: rotate(-90deg); }
@@ -56,7 +55,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 @keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
 /* 3. Màn hình Video */
-#main-scene { width: 100%; height: 100%; position: relative; z-index: 5; cursor: pointer; } /* Thêm cursor pointer */
+#main-scene { width: 100%; height: 100%; position: relative; z-index: 5; cursor: pointer; }
 #birthday-video { width: 100%; height: 100%; object-fit: cover; }
 #gift-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; cursor: pointer; z-index: 20; animation: shake 2s infinite; }
 @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); } 20%, 40% { transform: translate(-50%, -50%) rotate(10deg); } 50% { transform: translate(-50%, -50%) rotate(0deg); } }
@@ -85,6 +84,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     position: absolute; top: 0; left: 0; z-index: 100; 
     background: url('nento.png') no-repeat center center/cover; 
     overflow: hidden;
+    cursor: pointer; /* YÊU CẦU 2: Thêm con trỏ để biết click được */
 }
 
 /* Ảnh tn.jpg */
