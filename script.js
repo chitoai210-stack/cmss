@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slidingImg = document.getElementById('sliding-img');
     const messageContainer = document.getElementById('message-container');
     const noteContainer = document.getElementById('note-container'); 
-    const userNote = document.getElementById('user-note'); // Textarea
+    const userNote = document.getElementById('user-note'); 
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
 
@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let count = 5;
     let timer = null;
     
-    // YÊU CẦU 1: Click để bỏ qua đếm ngược
     countdownScreen.addEventListener('click', () => {
         if (timer) clearInterval(timer);
         startMainScene();
@@ -107,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let giftShown = false;
             
-            // Hàm hiện quà
             const showGift = () => {
                 if (!giftShown) {
                     giftBox.classList.remove('hidden');
@@ -115,19 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            // Sự kiện update time bình thường
             birthdayVideo.addEventListener('timeupdate', () => {
                 if (birthdayVideo.duration && (birthdayVideo.duration - birthdayVideo.currentTime <= 7)) {
                     showGift();
                 }
             });
 
-            // YÊU CẦU 1: Click vào màn hình video để hiện quà ngay lập tức (Tua nhanh)
             mainScene.addEventListener('click', (e) => {
-                // Tránh conflict click vào hộp quà
                 if (e.target.id !== 'gift-box') {
-                    birthdayVideo.pause(); // Dừng video
-                    showGift(); // Hiện quà ngay
+                    birthdayVideo.pause(); 
+                    showGift(); 
                 }
             });
         }
@@ -150,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => { hammer.classList.remove('hammer-down'); });
 
     let score = 0;
-    const targetScore = 25; 
+    // YÊU CẦU 1: Giảm bớt 5 con (25 -> 20)
+    const targetScore = 20; 
     let isGameRunning = false;
     let gameInterval = null;
     let isSpeedUp = false; 
@@ -243,6 +239,18 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "Tiểu Ngân Ngân mộng mơ", delay: 3000 }
     ];
 
+    // YÊU CẦU 2: Biến cờ hiệu tua nhanh
+    let isMessageSpeedUp = false; 
+    let messageTimer = null; // Lưu timer để clear nếu cần
+
+    // YÊU CẦU 2: Click vào màn hình Victory để bật chế độ tua nhanh
+    victoryScreen.addEventListener('click', () => {
+        // Tránh conflict nếu click vào textarea ghi chú
+        if(document.activeElement !== userNote) {
+            isMessageSpeedUp = true;
+        }
+    });
+
     function endGame() {
         isGameRunning = false;
         clearInterval(gameInterval);
@@ -277,31 +285,29 @@ document.addEventListener('DOMContentLoaded', () => {
             startFireworks();
 
             setTimeout(() => {
-                // 1. Làm mờ và ẩn khung tin nhắn
                 messageContainer.style.transition = "opacity 2s ease"; 
                 messageContainer.style.opacity = "0";
 
-                // 2. Hình tn chạy từ trái về trung tâm
                 slidingImg.classList.remove('slide-left');
+                // Thời gian trượt về giữa là 5 giây
                 slidingImg.style.transition = "all 5s ease-in-out";
                 slidingImg.classList.add('show-center');
 
-                // YÊU CẦU 2: HIỆN Ô GHI CHÚ SAU 1 GIÂY
+                // YÊU CẦU 3: HIỆN Ô GHI CHÚ SAU KHI VỀ GIỮA ĐƯỢC 1 GIÂY
+                // Tổng = 5s (trượt) + 1s (chờ) = 6000ms
                 setTimeout(() => {
                     noteContainer.classList.remove('hidden');
                     noteContainer.style.opacity = "1";
 
-                    // YÊU CẦU 2 (TIẾP): LƯU TRỮ VÀO LOCAL STORAGE
                     const savedNote = localStorage.getItem('birthdayNote');
                     if(savedNote) {
                         userNote.value = savedNote;
                     }
-                    // Lắng nghe sự kiện nhập liệu để lưu
                     userNote.addEventListener('input', (e) => {
                         localStorage.setItem('birthdayNote', e.target.value);
                     });
 
-                }, 1000); // 1 giây sau khi hình bắt đầu về giữa
+                }, 6000); 
 
             }, 2000); 
 
@@ -319,9 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
             messageContainer.scrollTop = messageContainer.scrollHeight;
         });
 
-        setTimeout(() => {
+        // YÊU CẦU 2: Kiểm tra nếu đang tua nhanh thì delay chỉ còn 500ms
+        const delayTime = isMessageSpeedUp ? 500 : msgData.delay;
+
+        messageTimer = setTimeout(() => {
             showMessagesRecursive(index + 1);
-        }, msgData.delay);
+        }, delayTime);
     }
 
     // --- 6. FIREWORKS ---
