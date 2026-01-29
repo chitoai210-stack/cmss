@@ -18,7 +18,7 @@
     </div>
 
     <div id="start-screen" class="hidden">
-        <h1 class="blink-text">Mật khẩu đúng!<br>Nhấp vào đây để bắt đầu</h1>
+        <h1 id="start-text" class="blink-text">Mật khẩu đúng!</h1>
     </div>
 
     <div id="countdown-screen" class="hidden">
@@ -51,7 +51,12 @@
         <img id="sliding-img" src="tn.jpg" alt="Memory">
         
         <div id="message-container">
-            </div>
+        </div>
+
+        <div id="note-container" class="hidden">
+            <div class="note-label">Ô này để ghi những gì bạn muốn:</div>
+            <textarea id="user-note" placeholder="Nhập vào đây..."></textarea>
+        </div>
 
         <canvas id="fireworks"></canvas>
     </div>
