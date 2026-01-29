@@ -27,28 +27,28 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 #pass-btn:hover { background-color: #007bbd; }
 #pass-error { color: #ff4d4d; margin-top: 10px; font-weight: bold; }
 
-/* 1. Màn hình Start - CHỈNH SỬA THEO YÊU CẦU 1 */
+/* 1. Màn hình Start */
 #start-screen { 
     width: 100%; height: 100%; 
     display: flex; justify-content: center; align-items: center; 
     background-color: #000; cursor: pointer; 
     position: absolute; z-index: 50; 
-    padding: 20px; /* Thêm padding để chữ không sát lề */
+    padding: 20px; 
 }
 #start-screen h1 { 
     color: #fff; 
     text-align: center; 
     line-height: 1.5; 
-    /* Yêu cầu: Font Times New Roman, Size 20 word (~26px - 28px web) */
+    /* Yêu cầu 3: Size 30 word ~ 40px web */
     font-family: 'Times New Roman', serif; 
-    font-size: 28px; 
-    font-weight: normal; /* Times New Roman thường mặc định không đậm quá mức như Arial */
+    font-size: 40px; 
+    font-weight: normal; 
 }
 .blink-text { animation: blinker 1.5s linear infinite; }
 @keyframes blinker { 50% { opacity: 0; } }
 
 /* 2. Màn hình đếm ngược */
-#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; z-index: 10; background-color: #000; }
+#countdown-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; z-index: 10; background-color: #000; cursor: pointer; } /* Thêm cursor pointer để biết là bấm được */
 .countdown-container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
 #countdown-number { color: #fff; font-size: 8rem; font-weight: bold; position: absolute; z-index: 2; }
 .progress-ring__circle { stroke-dasharray: 754; stroke-dashoffset: 0; transform-origin: 50% 50%; transform: rotate(-90deg); }
@@ -56,7 +56,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 @keyframes countdown-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 754; } }
 
 /* 3. Màn hình Video */
-#main-scene { width: 100%; height: 100%; position: relative; z-index: 5; }
+#main-scene { width: 100%; height: 100%; position: relative; z-index: 5; cursor: pointer; } /* Thêm cursor pointer */
 #birthday-video { width: 100%; height: 100%; object-fit: cover; }
 #gift-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; cursor: pointer; z-index: 20; animation: shake 2s infinite; }
 @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 10%, 30% { transform: translate(-50%, -50%) rotate(-10deg); } 20%, 40% { transform: translate(-50%, -50%) rotate(10deg); } 50% { transform: translate(-50%, -50%) rotate(0deg); } }
@@ -141,17 +141,17 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     pointer-events: none; z-index: 200;
 }
 
-/* --- YÊU CẦU 2: KHUNG GHI CHÚ --- */
+/* Khung ghi chú */
 #note-container {
     position: absolute;
-    top: 10%;      /* Cạnh trên */
-    right: 5%;     /* Cạnh phải */
+    top: 10%;      
+    right: 5%;     
     width: 300px;
-    z-index: 300;  /* Cao hơn pháo hoa để click được */
+    z-index: 300;  
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    opacity: 0;    /* Mặc định ẩn */
+    opacity: 0;    
     transition: opacity 2s ease;
 }
 
@@ -177,9 +177,9 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     font-size: 1rem;
     color: #333;
     outline: none;
-    resize: none; /* Không cho kéo giãn thủ công */
-    white-space: pre-wrap; /* Xuống dòng khi dài quá */
-    overflow-wrap: break-word; /* Ngắt từ để không tràn ngang */
+    resize: none; 
+    white-space: pre-wrap; 
+    overflow-wrap: break-word; 
     box-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
@@ -189,7 +189,6 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; transform: translateY(150%); } 
     .box-visible { transform: translateY(0) !important; }
     
-    /* Mobile Note adjustments */
     #note-container {
         top: auto; bottom: 5%; right: 5%; left: 5%; width: 90%;
     }
