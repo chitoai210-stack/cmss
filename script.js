@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passError = document.getElementById('pass-error');
     
     const startScreen = document.getElementById('start-screen');
-    const startText = document.getElementById('start-text'); // Element chứa chữ ở màn hình start
+    const startText = document.getElementById('start-text');
 
     const countdownScreen = document.getElementById('countdown-screen');
     const countdownNumber = document.getElementById('countdown-number');
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const victoryScreen = document.getElementById('victory-screen');
     const slidingImg = document.getElementById('sliding-img');
     const messageContainer = document.getElementById('message-container');
-    const noteContainer = document.getElementById('note-container'); // Element Note Box
+    const noteContainer = document.getElementById('note-container'); 
+    const userNote = document.getElementById('user-note'); // Textarea
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
 
@@ -39,11 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             
-            // --- YÊU CẦU 1: Đổi nội dung màn hình Start ---
-            // Ngay khi mở: Hiện cảnh báo
             startText.innerHTML = "Nên dùng laptop để xem sẽ trọn vẹn hơn - do thiết kế chưa được tối ưu trên iphone,ipad";
             
-            // Sau 8 giây: Hiện hướng dẫn click
             setTimeout(() => {
                 startText.innerHTML = "Có thể click vào màn hình để xem lại nhanh hơn";
             }, 8000);
@@ -66,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownScreen.classList.remove('hidden');
         ringCircle.classList.add('animate-ring');
         
-        // Mồi âm thanh
         if(popSound) { popSound.muted = true; popSound.play().catch(()=>{}); popSound.pause(); popSound.currentTime=0; popSound.muted = false; }
         if(bgMusic && bgMusic.paused) { bgMusic.play().catch(()=>{}); }
         
@@ -76,6 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. ĐẾM NGƯỢC ---
     let count = 5;
     let timer = null;
+    
+    // YÊU CẦU 1: Click để bỏ qua đếm ngược
+    countdownScreen.addEventListener('click', () => {
+        if (timer) clearInterval(timer);
+        startMainScene();
+    });
+
     function runCountdown() {
         updateDisplay(count);
         timer = setInterval(() => {
@@ -101,12 +105,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (birthdayVideo) { 
             birthdayVideo.play().catch(() => { birthdayVideo.muted = true; birthdayVideo.play(); }); 
             
-            // --- YÊU CẦU 1 (Cũ): HIỆN HỘP QUÀ TRƯỚC KHI KẾT THÚC 7 GIÂY ---
             let giftShown = false;
-            birthdayVideo.addEventListener('timeupdate', () => {
-                if (birthdayVideo.duration && (birthdayVideo.duration - birthdayVideo.currentTime <= 7) && !giftShown) {
+            
+            // Hàm hiện quà
+            const showGift = () => {
+                if (!giftShown) {
                     giftBox.classList.remove('hidden');
                     giftShown = true;
+                }
+            };
+
+            // Sự kiện update time bình thường
+            birthdayVideo.addEventListener('timeupdate', () => {
+                if (birthdayVideo.duration && (birthdayVideo.duration - birthdayVideo.currentTime <= 7)) {
+                    showGift();
+                }
+            });
+
+            // YÊU CẦU 1: Click vào màn hình video để hiện quà ngay lập tức (Tua nhanh)
+            mainScene.addEventListener('click', (e) => {
+                // Tránh conflict click vào hộp quà
+                if (e.target.id !== 'gift-box') {
+                    birthdayVideo.pause(); // Dừng video
+                    showGift(); // Hiện quà ngay
                 }
             });
         }
@@ -165,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxY = finalScene.offsetHeight - 120;
 
         if (score >= 5) {
-            // --- YÊU CẦU 2 (Cũ): GIẢM 2% VỊ TRÍ ---
             randomX = finalScene.offsetWidth * 0.30; 
             randomY = finalScene.offsetHeight * 0.17;
         } else {
@@ -266,13 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 slidingImg.style.transition = "all 5s ease-in-out";
                 slidingImg.classList.add('show-center');
 
-                // --- YÊU CẦU 2: HIỆN Ô GHI CHÚ ---
-                // Sau khi hình bắt đầu chạy về giữa được 1 chút (hoặc đợi hình yên vị)
-                // Ở đây mình để hiện dần lên sau 2s (khi hình đang chạy về giữa)
+                // YÊU CẦU 2: HIỆN Ô GHI CHÚ SAU 1 GIÂY
                 setTimeout(() => {
                     noteContainer.classList.remove('hidden');
                     noteContainer.style.opacity = "1";
-                }, 2000);
+
+                    // YÊU CẦU 2 (TIẾP): LƯU TRỮ VÀO LOCAL STORAGE
+                    const savedNote = localStorage.getItem('birthdayNote');
+                    if(savedNote) {
+                        userNote.value = savedNote;
+                    }
+                    // Lắng nghe sự kiện nhập liệu để lưu
+                    userNote.addEventListener('input', (e) => {
+                        localStorage.setItem('birthdayNote', e.target.value);
+                    });
+
+                }, 1000); // 1 giây sau khi hình bắt đầu về giữa
 
             }, 2000); 
 
