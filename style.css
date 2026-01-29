@@ -27,9 +27,23 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
 #pass-btn:hover { background-color: #007bbd; }
 #pass-error { color: #ff4d4d; margin-top: 10px; font-weight: bold; }
 
-/* 1. Màn hình Start */
-#start-screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #000; cursor: pointer; position: absolute; z-index: 50; }
-#start-screen h1 { color: #fff; font-size: 1.5rem; text-align: center; line-height: 1.5; text-transform: uppercase; letter-spacing: 2px; }
+/* 1. Màn hình Start - CHỈNH SỬA THEO YÊU CẦU 1 */
+#start-screen { 
+    width: 100%; height: 100%; 
+    display: flex; justify-content: center; align-items: center; 
+    background-color: #000; cursor: pointer; 
+    position: absolute; z-index: 50; 
+    padding: 20px; /* Thêm padding để chữ không sát lề */
+}
+#start-screen h1 { 
+    color: #fff; 
+    text-align: center; 
+    line-height: 1.5; 
+    /* Yêu cầu: Font Times New Roman, Size 20 word (~26px - 28px web) */
+    font-family: 'Times New Roman', serif; 
+    font-size: 28px; 
+    font-weight: normal; /* Times New Roman thường mặc định không đậm quá mức như Arial */
+}
 .blink-text { animation: blinker 1.5s linear infinite; }
 @keyframes blinker { 50% { opacity: 0; } }
 
@@ -96,45 +110,30 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     opacity: 1 !important;
 }
 
-/* Khung chứa tin nhắn - TRẠNG THÁI BAN ĐẦU: ẨN BÊN PHẢI */
+/* Khung chứa tin nhắn */
 #message-container {
     position: absolute;
     top: 10%; right: 5%; bottom: 10%;
     width: 45%; 
-    
-    /* Đẩy khung ra khỏi màn hình bên phải 120% */
     transform: translateX(150%);
-    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Hiệu ứng trượt mượt */
-
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
     overflow-y: auto;
     padding: 25px;
-    
     font-family: 'Times New Roman', serif;
     font-size: 1.2rem; 
     line-height: 1.6;
     color: #fff; 
-    
-    background-color: rgba(0, 0, 0, 0.6); /* Nền đen mờ 60% */
+    background-color: rgba(0, 0, 0, 0.6); 
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-
     z-index: 102;
     display: flex; flex-direction: column; gap: 10px;
 }
 
-/* Class để kích hoạt trượt khung vào */
-.box-visible {
-    transform: translateX(0) !important; /* Trở về vị trí gốc */
-}
+.box-visible { transform: translateX(0) !important; }
 
-/* Từng dòng tin nhắn */
-.msg-line {
-    opacity: 0; 
-    transition: opacity 1s ease; /* Chỉ hiện dần lên, không cần bay lên nữa */
-}
-.msg-visible {
-    opacity: 1;
-}
+.msg-line { opacity: 0; transition: opacity 1s ease; }
+.msg-visible { opacity: 1; }
 
 /* Canvas Pháo hoa */
 #fireworks {
@@ -142,9 +141,56 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000
     pointer-events: none; z-index: 200;
 }
 
+/* --- YÊU CẦU 2: KHUNG GHI CHÚ --- */
+#note-container {
+    position: absolute;
+    top: 10%;      /* Cạnh trên */
+    right: 5%;     /* Cạnh phải */
+    width: 300px;
+    z-index: 300;  /* Cao hơn pháo hoa để click được */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    opacity: 0;    /* Mặc định ẩn */
+    transition: opacity 2s ease;
+}
+
+.note-label {
+    color: #fff;
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px #000;
+    background: rgba(0,0,0,0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#user-note {
+    width: 100%;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    resize: none; /* Không cho kéo giãn thủ công */
+    white-space: pre-wrap; /* Xuống dòng khi dài quá */
+    overflow-wrap: break-word; /* Ngắt từ để không tràn ngang */
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
 /* Responsive Mobile */
 @media (max-width: 768px) {
     .slide-left { left: 50% !important; opacity: 0.2 !important; }
-    #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; transform: translateY(150%); } /* Mobile cho trượt từ dưới lên cho đẹp */
+    #message-container { width: 90%; right: 5%; left: 5%; top: 5%; bottom: 5%; transform: translateY(150%); } 
     .box-visible { transform: translateY(0) !important; }
+    
+    /* Mobile Note adjustments */
+    #note-container {
+        top: auto; bottom: 5%; right: 5%; left: 5%; width: 90%;
+    }
 }
